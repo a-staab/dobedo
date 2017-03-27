@@ -1,13 +1,14 @@
 from flask_sqlachemy import SQLAlchemy
 
-db = SQLAlchemy
+db = SQLAlchemy()
 
 # Open question: To denormalize or not to denormalize? Does the user_id belong
-# in both the Activity and Occurence tables?
+# in both the Activity and Occurence tables? Below, I've built it out with
+# user_id in both.
 
 
 class User(db.Model):
-    """   DOCSTRING  """
+    """User. A user has many activities."""
 
     __tablename__ = "users"
 
@@ -18,11 +19,13 @@ class User(db.Model):
     user_handle = db.Column(db.String(50), nullable=True)  # nice for anonymity, but no sharing planned (yet?)}
 
     def __repr__(self):
-        return "< ... >"
+     # TODO change email here to user_handle if implementing (and nullable to False)
+        return "<User with user_id %s and email %s>" % (self.user_id,
+                                                        self.email)
 
 
 class Activity(db.Model):
-    """   DOCSTRING  """
+    """Activity. An activity has many occurences."""
 
     __tablename__ = "activities"
 
@@ -31,16 +34,15 @@ class Activity(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     is_active = db.Column(db.Boolean, nullable=False)
 
-#TODO
-
-#Create relationship
+    user = db.relationship("User", backref="activities")
 
     def __repr__(self):
-        return "< ... >"
+        return "<Activity with act_id %s by user_id %s>" % (self.act_id,
+                                                            self.user_id)
 
 
 class Occurence(db.Model):
-    """   DOCSTRING """
+    """Occurence. An occurence has one activity. An occurence has one user."""
 
     __tablename__ = "occurences"
 
@@ -53,9 +55,10 @@ class Occurence(db.Model):
     after_rating = db.Column(db.Integer, nullable=False)
     notes_about = db.Column(db.String(350), nullable=True)
 
+    activity = db.relationship("Activity", backref="occurences")
+    user = db.relationship("User", backref="occurences")  # <----Bad to use the same name as Activity's rel?
+                                                          # may need to remove for denormalization.
+
     def __repr__(self):
-        return "< ... >"
-
-#TODO
-
-#Create relationships
+        return "<Occurence with occurence_id %s and act_id %s>" % (
+            self.occurence_id, self.act_id)
