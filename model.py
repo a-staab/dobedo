@@ -2,10 +2,6 @@ from flask_sqlachemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-# Open question: To denormalize or not to denormalize? Does the user_id belong
-# in both the Activity and Occurence tables? Below, I've built it out with
-# user_id in both.
-
 
 class User(db.Model):
     """User. A user has many activities."""
@@ -48,7 +44,6 @@ class Occurence(db.Model):
 
     occurrence_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     act_id = db.Column(db.Integer, db.ForeignKey('activities.act_id'))
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))  # <--Do we want this here?
     start_time = db.Column(db.DateTime, nullable=False)
     end_time = db.Column(db.DateTime, nullable=False)
     before_rating = db.Column(db.Integer, nullable=False)
@@ -56,8 +51,7 @@ class Occurence(db.Model):
     notes_about = db.Column(db.String(350), nullable=True)
 
     activity = db.relationship("Activity", backref="occurences")
-    user = db.relationship("User", backref="occurences")  # <----Bad to use the same name as Activity's rel?
-                                                          # may need to remove for denormalization.
+
 
     def __repr__(self):
         return "<Occurence with occurence_id %s and act_id %s>" % (
