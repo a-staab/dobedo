@@ -52,7 +52,6 @@ class Occurence(db.Model):
 
     activity = db.relationship("Activity", backref="occurences")
 
-
     def __repr__(self):
         return "<Occurence with occurence_id %s and act_id %s>" % (
             self.occurence_id, self.act_id)
