@@ -3,7 +3,7 @@ from flask import Flask, request, render_template, redirect, flash
 from flask_debugtoolbar import DebugToolbarExtension
 
 app = Flask(__name__)
-app.secret.key = "7SOIF280FSH9G0-SSKJ"
+app.secret_key = "7SOIF280FSH9G0-SSKJ"
 
 
 @app.route("/")
@@ -36,11 +36,11 @@ def signup_user():
     if User.query.filter(User.email == email).all():
         # TODO - Improve UX here?
         flash("Looks like you've already registered. If you mistyped, please try again.")
-        
+
     else:
         new_user = User(username=username,
                         password=password,
-                        email=email
+                        email=email,
                         age=age)
 
         db.session.add(new_user)
@@ -56,26 +56,32 @@ def request_act_types():
     return render_template("setup.html")
 
 
-@app.route("/setup", methods=["POST"])
-def create_act_types():
-    """Process setup form, adding user-defined activity types to database."""
+# @app.route("/setup", methods=["POST"])
+# def create_act_types():
+#     """Process setup form, adding user-defined activity types to database."""
 
-    activity_1 = request.form.get("activity_1")
-    activity_2 = request.form.get("activity_2")
-    activity_3 = request.form.get("activity_3")
-    activity_4 = request.form.get("activity_4")
-    activity_5 = request.form.get("activity_5")
-    activity_6 = request.form.get("activity_6")
-    activity_7 = request.form.get("activity_7")
-    activity_8 = request.form.get("activity_8")
-    activity_9 = request.form.get("activity_9")
-    activity_10 = request.form.get("activity_10")
+#     activity_1 = request.form.get("activity_1")
+#     activity_2 = request.form.get("activity_2")
+#     activity_3 = request.form.get("activity_3")
+#     activity_4 = request.form.get("activity_4")
+#     activity_5 = request.form.get("activity_5")
+#     activity_6 = request.form.get("activity_6")
+#     activity_7 = request.form.get("activity_7")
+#     activity_8 = request.form.get("activity_8")
+#     activity_9 = request.form.get("activity_9")
+#     activity_10 = request.form.get("activity_10")
 
-    Activity(activity_1)...
 
-    # TODO ? - flash("Great! Looks like you're ready to start tracking!")
 
-    return redirect("/main")
+#     for activity in activities:
+
+#         (instantiate)
+
+#     Activity(activity_1)...
+
+#     # TODO ? - flash("Great! Looks like you're ready to start tracking!")
+
+#     return redirect("/main")
 
 
 @app.route("/signin", methods=["GET"])
@@ -108,4 +114,4 @@ def signin_user():
 if __name__ == "__main__":
     app.debug = True
     DebugToolbarExtension(app)
-    app.run()
+    app.run(host="0.0.0.0")
