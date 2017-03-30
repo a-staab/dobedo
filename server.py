@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, flash
+from flask import Flask, request, render_template, redirect, flash, session
 
 from flask_debugtoolbar import DebugToolbarExtension
 
@@ -26,63 +26,83 @@ def display_signup_form():
 def signup_user():
     """Process signup form, adding user to database."""
 
-    # Get fields data from request object
-
     username = request.form.get("username")
     password = request.form.get("password")
     email = request.form.get("email")
     age = request.form.get("age")
 
-    # Check database for pre-existing account by checking for email
-
+    # Check database for pre-existing account by checking for a user with the
+    # provided email address
     if User.query.filter(User.email == email).all():
-        # TODO - Improve UX here?
-        flash("Looks like you've already registered. If you mistyped, please try again.")
+        flash("Looks like you've already registered. If you mistyped, please tr\
+               y again.")
+
+        return redirect("/signup")
 
     else:
-        new_user = User(username=username,
-                        password=password,
-                        email=email,
-                        age=age)
+        if age:
+            new_user = User(user_handle=username,
+                            password=password,
+                            email=email,
+                            age=age)
+
+        else:
+            new_user = User(user_handle=username,
+                            password=password,
+                            email=email)
 
         db.session.add(new_user)
         db.session.commit()
 
-    return  # CODE
+    return redirect("/setup")
 
 
 @app.route("/setup", methods=["GET"])
-def request_act_types():
+def request_activity_types():
     """Display form for user to choose the activities they want to track."""
 
     return render_template("setup.html")
 
-# @app.route("/setup", methods=["POST"])
-# def create_act_types():
-#     """Process setup form, adding user-defined activity types to database."""
 
-#     activity_1 = request.form.get("activity_1")
-#     activity_2 = request.form.get("activity_2")
-#     activity_3 = request.form.get("activity_3")
-#     activity_4 = request.form.get("activity_4")
-#     activity_5 = request.form.get("activity_5")
-#     activity_6 = request.form.get("activity_6")
-#     activity_7 = request.form.get("activity_7")
-#     activity_8 = request.form.get("activity_8")
-#     activity_9 = request.form.get("activity_9")
-#     activity_10 = request.form.get("activity_10")
+@app.route("/setup", methods=["POST"])
+def create_activity_types():
+    """Process setup form, adding user-defined activity types to database."""
 
+    # TODO test user can add an activity :D Look up integration test.
 
+    if not session["user_id"]:  # <--Is this a thing that works?
+        flash("You need to be logged in to view this page. Please log in.")
 
-#     for activity in activities:
+    activity_1 = request.form.get("activity_1")
+    activity_2 = request.form.get("activity_2")
+    activity_3 = request.form.get("activity_3")
+    activity_4 = request.form.get("activity_4")
+    activity_5 = request.form.get("activity_5")
+    activity_6 = request.form.get("activity_6")
+    activity_7 = request.form.get("activity_7")
+    activity_8 = request.form.get("activity_8")
+    activity_9 = request.form.get("activity_9")
+    activity_10 = request.form.get("activity_10")
 
-#         (instantiate)
+    activities = [activity_1, activity_2, activity_3, activity_4, activity_5,
+                  activity_6, activity_7, activity_8, activity_9, activity_10]
 
-#     Activity(activity_1)...
+    if activities:
+        for activity in activities:
+            new_activity = Activity(activity_type=activity,
+                                    user_id=session["user_id"])
 
-#     # TODO ? - flash("Great! Looks like you're ready to start tracking!")
+            db.session.add(new_activity)
+        db.session.commit()
 
-#     return redirect("/main")
+        flash("Great! Looks like you're ready to start tracking!")
+        return redirect("/main")
+
+    else:
+        flash("You need to select at least one activity to be tracked. Please m\
+              ake a selection and try again.")
+        return redirect("/setup")
+
 
 @app.route("/signin", methods=["GET"])
 def display_signin_form():
@@ -95,9 +115,25 @@ def display_signin_form():
 def signin_user():
     """Handle sign-in."""
 
-    # CODE
+    password = request.form.get("password")
+    email = request.form.get("email")
 
-    return redirect("/main")  # After logging end, send user to main page.
+    # Check that a user with the provided email address is already in database
+    if User.query.filter(User.email == email).all():
+        # If so, check that in the database, the password for the user with the
+        # provided email address matches the password provided
+        if User.query.filter(User.email == email).one().password == password:
+            # If so, get the user's user_id and store it on the session
+            user_id = User.query.filter(User.email == email).one().user_id
+            session["user_id"] = user_id
+
+            flash("Thanks for logging in!")
+            return redirect("/main")
+
+    else:
+        flash("Sorry, we didn't find an account with the email and password you\
+               provided. Please try again.")
+        return redirect("/signin")
 
 
 # For additional routes, a stub:
