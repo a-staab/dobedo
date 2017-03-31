@@ -70,7 +70,7 @@ def create_activity_types():
 
     # TODO test user can add an activity :D Look up integration test.
 
-    if not session["user_id"]:  # <--Is this a thing that works?
+    if not session["user_id"]:  # <--Is this a thing that works? (No - fix)
         flash("You need to be logged in to view this page. Please log in.")
 
     activity_1 = request.form.get("activity_1")
@@ -87,8 +87,21 @@ def create_activity_types():
     activities = [activity_1, activity_2, activity_3, activity_4, activity_5,
                   activity_6, activity_7, activity_8, activity_9, activity_10]
 
-    if activities:
-        for activity in activities:
+    new_activities = []
+
+    for activity in activities:
+        if activity:
+            new_activities.append(activity)
+
+    if new_activities == []:
+
+        flash("""You need to enter at least one activity to contine.
+              Please make a selection and try again.""")
+        return redirect("/setup")
+
+    else:
+
+        for activity in new_activities:
             new_activity = Activity(activity_type=activity,
                                     user_id=session["user_id"])
 
@@ -97,11 +110,6 @@ def create_activity_types():
 
         flash("Great! Looks like you're ready to start tracking!")
         return redirect("/main")
-
-    else:
-        flash("You need to select at least one activity to be tracked. Please m\
-              ake a selection and try again.")
-        return redirect("/setup")
 
 
 @app.route("/signin", methods=["GET"])
