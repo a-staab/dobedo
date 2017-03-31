@@ -70,8 +70,9 @@ def create_activity_types():
 
     # TODO test user can add an activity :D Look up integration test.
 
-    if not session["user_id"]:  # <--Is this a thing that works? (No - fix)
+    if session.get("user_id", 0) == 0:
         flash("You need to be logged in to view this page. Please log in.")
+        return redirect("/signin")
 
     activity_1 = request.form.get("activity_1")
     activity_2 = request.form.get("activity_2")
