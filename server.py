@@ -70,6 +70,7 @@ def create_activity_types():
 
     # TODO test user can add an activity :D Look up integration test.
 
+    # Make sure user is logged in
     if session.get("user_id", 0) == 0:
         flash("You need to be logged in to view this page. Please log in.")
         return redirect("/signin")
@@ -94,12 +95,14 @@ def create_activity_types():
         if activity:
             new_activities.append(activity)
 
+    # Handle submission of form with no values
     if new_activities == []:
 
         flash("""You need to enter at least one activity to contine.
               Please make a selection and try again.""")
         return redirect("/setup")
 
+    # For every activity user provides, add activity to the database
     else:
 
         for activity in new_activities:
