@@ -1,5 +1,4 @@
 from flask_sqlalchemy import SQLAlchemy
-from server import session
 
 db = SQLAlchemy()
 
@@ -55,7 +54,6 @@ class Occurrence(db.Model):
     def __repr__(self):
         return "<Occurrence with occurrence_id %s and activity_id %s>" % (
             self.occurrence_id, self.activity_id)
-
 
 def connect_to_db(app):
     """Connect to the database."""
@@ -130,9 +128,9 @@ def example_data():
 
     # ^--Once complete, add test occurrences to list--v
     db.session.add_all([ashley, soo, hannah, mel])
-    db.sesssion.commit()
+    db.session.commit()
 
 if __name__ == "__main__":
-    from server import app
+    from server import app, session
     connect_to_db(app)
     print "Connected to DB! Woo!"
