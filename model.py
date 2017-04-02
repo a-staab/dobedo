@@ -70,13 +70,15 @@ def connect_to_db(app):
 
 def create_new_user(email, password, user_handle, age=None):
 
-    new_user = User(email=email,
-                    password=password,
-                    age=age,
-                    user_handle=user_handle)
+    return User(email=email,
+                password=password,
+                user_handle=user_handle,
+                age=age)
 
-    db.session.add(new_user)
-    db.session.commit()
+    # v--Should this be included? Removed so I could use function inside
+    #    example_data() below
+    # db.session.add(new_user)
+    # db.session.commit()
 
 
 def example_data():
@@ -96,17 +98,22 @@ def example_data():
     hannah = create_new_user('hacks@hackbright.com', 'python', 'linguist')
 
     # Test supplying an age, which is optional
-    mel = User('mel@ubermelon.com', 'python', 'melons_honcho', 42)
+    mel = User(email='mel@ubermelon.com',
+               password='python',
+               user_handle='melons_honcho',
+               age=42)
 
-    # Test activity setup, which requires session data
-    active_activity = Activity(activity_type='coding',
-                               user_id=session["user_id"])
+    # ______ Move to these two to tests.py because they require session? _______
+    # # Test activity setup, which requires session data
+    # active_activity = Activity(activity_type='coding',
+    #                            user_id=session["user_id"])
 
-    # Test is_active can be specified too (though this change wouldn't normally
-    # be set at creation time)
-    inactive_activity = Activity(activity_type='coding',
-                                 user_id=session["user_id"],
-                                 is_active=False)
+    # # Test is_active can be specified too (though this change wouldn't normally
+    # # be set at creation time)
+    # inactive_activity = Activity(activity_type='coding',
+    #                              user_id=session["user_id"],
+    #                              is_active=False)
+    # _________________________________________________________________________
 
     # Test that an occurrence can be created without end_time, after_rating, and
     # notes
@@ -122,8 +129,7 @@ def example_data():
     # t_occurence_1 = (set values for end_time, after_rating, and notes)
 
     # ^--Once complete, add test occurrences to list--v
-    db.session.add_all([ashley, soo, hannah, mel, active_activity,
-                        inactive_activity])
+    db.session.add_all([ashley, soo, hannah, mel])
     db.sesssion.commit()
 
 if __name__ == "__main__":

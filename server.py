@@ -1,7 +1,5 @@
 from flask import Flask, request, render_template, redirect, flash, session
-
 from flask_debugtoolbar import DebugToolbarExtension
-
 from model import User, Activity, Occurrence, connect_to_db, db
 
 app = Flask(__name__)
