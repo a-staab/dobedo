@@ -1,8 +1,9 @@
 from unittest import TestCase
 from server import app
+from model import db, connect_to_db, example_data
 
 
-class Tests(TestCase):
+class Test(TestCase):
 
     def setUp(self):
         """Do this before each test."""
@@ -36,9 +37,8 @@ class Tests(TestCase):
 
     def t_create_activity_types(self):
 
-        result = self.client.post("/setup", data={"activity_1": "rowing"},
+        result = self.client.post("/setup", data={"activity_type": "rowing",
+                                  "user_id": "session[\"user_id\"]"},
                                   follow_redirects=True)
+        # Change 'Main Page' below once main page is built
         self.assertIn('Main Page', result.data)
-
-        # ^--Fix this. See pgs. 4 - 5 of Testing Flask
-        
