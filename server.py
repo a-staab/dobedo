@@ -146,6 +146,12 @@ def signin_user():
         return redirect("/signin")
 
 
+@app.route("/main", methods=["GET"])
+def show_main_page():
+    """Load main page."""
+
+    return render_template("/main.html")
+
 # For additional routes, a stub:
 
 # @app.route("/main")
