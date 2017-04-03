@@ -150,7 +150,54 @@ def signin_user():
 def show_main_page():
     """Load main page."""
 
-    return render_template("/main.html")
+    activities = Activity.query.filter(Activity.user_id == session['user_id']).all()
+
+    activity_names = []
+    for activity in activities:
+        activity_names.append(activity.activity_type)
+
+    names_list = " ".join(activity_names)
+
+    return render_template("/main.html",
+                           names_list=names_list)
+
+
+@app.route("/record_before/<activity_id>", methods=["GET"])
+def display_before_form(activity_id):
+
+    return render_template("/record_before.html",
+                           activity_id=activity_id)
+
+
+@app.route("/record_before/<activity_id>", methods=["POST"])
+def get_before_values(activity_id):
+
+    before_rating = request.form.get("before_rating")
+    start_time = request.form.get("start_time")
+
+    new_occurrence = Occurrence(activity_id=activity_id,
+                                user_id=session["user_id"],
+                                start_time=start_time,
+                                before_rating=before_rating)
+
+    db.session.add(new_occurrence)
+    db.session.commit()
+
+    flash("Entries successfully saved.")
+    return redirect("/main")
+
+@app.route("/record_after/<activity_id>", methods=["GET"])
+def display_after_form(activity_id):
+
+    # CODE
+
+@app.route("/record_after/<activity_id>", methods=["POST"])
+def get_after_values(activity_id):
+
+    after_rating = request.form.get("after_rating")
+    end_time = request.form.get("end_time")
+
+    
 
 # For additional routes, a stub:
 

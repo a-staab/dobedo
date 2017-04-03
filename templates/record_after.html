@@ -3,14 +3,36 @@
 <head>
     <title>Finish Your Entry</title>
 </head>
-    <p>What time did you finish?
+    <form action="/record_after/{{ activity_id }}", method="POST">
+    <p>When did you finish?
         <br>
-        <!-- --now radio button--> or <!-- other datetime dropdown or entry field for later times -->
+        <br>
+        <button type="button" id="now" name="end_time">Now</button> or <input type=text name="end_time">
         <br>
         <br>
+        How did you feel about it? 
+        <select name="after_rating">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+        </select>
+        <br>
+        <br>
+        <input type="submit" value="Save">
+
+            <!-- Alternative, more complicated user flow: -->
         <!--if user selected now, ask: How do you feel? and show dropdown menu with 1 - 10 -->
-        <!--if user entered a time in the dropdown, ask: How did you feel when you were done? and show
-        dropdown menu with 1 - 10 -->
+        <!--if user entered a time in the dropdown, ask: 
+        How did you feel when you were done? and show dropdown menu with 1 - 10 -->
+
+    </form>
 <body>
 
 </body>

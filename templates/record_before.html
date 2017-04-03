@@ -4,13 +4,29 @@
     <title>Begin Your Entry</title>
 </head>
 <body>
-
-    <p>What time do you plan to start?
-        <br>
-        <!-- --now radio button--> or <!-- other datetime dropdown or entry field for later times -->
+    <form action="/record_before/{{ activity_id }}", method="POST">
+    <p>When do you plan to start?
         <br>
         <br>
-        How are you feeling about it? <!-- dropdown menu with 1 - 10 -->
-
+        <button type="button" id="now" name="start_time">Now</button> or <input type=text name="start_time">
+        <!-- or other datetime dropdown or entry field for later times -->
+        <br>
+        <br>
+        How are you feeling about it? <select name="before_rating">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+        </select>
+        <br>
+        <br>
+        <input type="submit" value="Save">
+    </form>
 </body>
 </html>

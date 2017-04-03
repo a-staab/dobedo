@@ -44,9 +44,9 @@ class Occurrence(db.Model):
     occurrence_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     activity_id = db.Column(db.Integer, db.ForeignKey('activities.activity_id'))
     start_time = db.Column(db.DateTime, nullable=False)
-    end_time = db.Column(db.DateTime, nullable=False)
+    end_time = db.Column(db.DateTime, nullable=True)
     before_rating = db.Column(db.Integer, nullable=False)
-    after_rating = db.Column(db.Integer, nullable=False)
+    after_rating = db.Column(db.Integer, nullable=True)
     notes = db.Column(db.Unicode(350), nullable=True)
 
     activity = db.relationship("Activity", backref="occurrences")
@@ -54,6 +54,7 @@ class Occurrence(db.Model):
     def __repr__(self):
         return "<Occurrence with occurrence_id %s and activity_id %s>" % (
             self.occurrence_id, self.activity_id)
+
 
 def connect_to_db(app):
     """Connect to the database."""
