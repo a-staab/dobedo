@@ -153,22 +153,25 @@ def show_main_page():
 
     activities = Activity.query.filter(Activity.user_id == session['user_id']).all()
 
-    activity_names = []
-    for activity in activities:
-        activity_names.append(activity.activity_type)
-
-    names_list = " ".join(activity_names)
-
     return render_template("/main.html",
-                           names_list=names_list)
+                           # names_list=names_list,
+                           activities=activities)
+
+
+@app.route("/plan_activity", methods=["POST"])
+def handle_activity_choice():
+    """Handle form for planning an activity."""
+
+    activity_id = request.form.get("activity-choice")
+
+    return redirect("/record_before/" + activity_id)
 
 
 @app.route("/record_before/<activity_id>", methods=["GET"])
 def display_before_form(activity_id):
     """Display form for creating a new occurrence."""
 
-    return render_template("/record_before.html",
-                           activity_id=activity_id)
+    return render_template("/record_before.html", activity_id=activity_id)
 
 
 @app.route("/record_before/<activity_id>", methods=["POST"])

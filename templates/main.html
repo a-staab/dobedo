@@ -9,8 +9,16 @@
     </script>
     <h1>Plan an Activity</h1>
     <p>
-    <!-- Dropdown is populated by results of query for user's activity types -->
-    Pick an activity to begin tracking: <select id="activity_choice"></select>
+
+    <!-- Dropdown is populated by results of query for user activity types -->
+    Pick an activity to begin tracking: 
+    <form action="/plan_activity" method="POST">
+        <select name="activity-choice">
+            {% for activity in activities %}
+            <option value="{{ activity.activity_id }}">{{ activity.activity_type }}</option>
+            {% endfor %}
+        </select> <input type="submit" value="Begin">
+    </form>
     </p>
     <div><h2>Planned Activities</h2>
         <!-- Loop through occurrences without end times -->
