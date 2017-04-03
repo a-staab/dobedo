@@ -8,11 +8,14 @@
     <p>When do you plan to start?
         <br>
         <br>
-        <button type="button" id="now" name="start_time">Now</button> or <input type=text name="start_time">
+        <button type="button" id="now" name="now-start">Now</button> or
+        <input type=text name="planned-time" id="planned-time" placeholder="12:00 pm"> 
+        <!--TODO Nice to have: pass datetime.now + 24 hrs from route for below placeholder-->
+        <input type=text name="planned-date" id="planned-date" placeholder="12/31/2017">
         <!-- or other datetime dropdown or entry field for later times -->
         <br>
         <br>
-        How are you feeling about it? <select name="before_rating">
+        How are you feeling about it? <select name="before-rating">
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>

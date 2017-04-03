@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template, redirect, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
 from model import db, User, Activity, Occurrence, connect_to_db
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = "7SOIF280FSH9G0-SSKJ"
@@ -164,6 +165,7 @@ def show_main_page():
 
 @app.route("/record_before/<activity_id>", methods=["GET"])
 def display_before_form(activity_id):
+    """Display form for creating a new occurrence."""
 
     return render_template("/record_before.html",
                            activity_id=activity_id)
@@ -171,12 +173,20 @@ def display_before_form(activity_id):
 
 @app.route("/record_before/<activity_id>", methods=["POST"])
 def get_before_values(activity_id):
+    """Process form, creating a new occurrence and saving it to the database."""
 
-    before_rating = request.form.get("before_rating")
-    start_time = request.form.get("start_time")
+    before_rating = request.form.get("before-rating")
+    now_start = request.form.get("now-start")
+    start_hour = request.form.get("planned-time")
+    start_date = request.form.get("planned-date")
+
+    if now_start:
+        start_time = datetime.now()
+    else:
+        unformatted_time = start_date + " " + start_hour
+        start_time = datetime.strptime(unformatted_time, "%d/%m/%Y %I:%M %p")
 
     new_occurrence = Occurrence(activity_id=activity_id,
-                                user_id=session["user_id"],
                                 start_time=start_time,
                                 before_rating=before_rating)
 
@@ -186,18 +196,18 @@ def get_before_values(activity_id):
     flash("Entries successfully saved.")
     return redirect("/main")
 
-@app.route("/record_after/<activity_id>", methods=["GET"])
-def display_after_form(activity_id):
+# @app.route("/record_after/<activity_id>", methods=["GET"])
+# def display_after_form(activity_id):
 
-    # CODE
+#     # CODE
 
-@app.route("/record_after/<activity_id>", methods=["POST"])
-def get_after_values(activity_id):
+# @app.route("/record_after/<activity_id>", methods=["POST"])
+# def get_after_values(activity_id):
 
-    after_rating = request.form.get("after_rating")
-    end_time = request.form.get("end_time")
+#     after_rating = request.form.get("after_rating")
+#     end_time = request.form.get("end_time")
 
-    
+
 
 # For additional routes, a stub:
 
