@@ -155,13 +155,12 @@ def show_main_page():
     activities = Activity.query.filter(Activity.user_id == session['user_id']).all()
 
     # Get list of user's occurrences without end times & before ratings
-
     user = User.query.filter(User.user_id == session['user_id']).first()
-    planned_occurrences = get_planned_occurrences(user)
+    planned_occurrences = user.get_planned_occurrences()
 
-    # Now, need to get planned_occurrences.start_time and display as links
-
-    return render_template("/main.html", activities=activities, planned_by_start_time=planned_by_start_time)
+    return render_template("/main.html",
+                           activities=activities,
+                           planned_occurrences=planned_occurrences)
 
 
 @app.route("/plan_activity", methods=["POST"])
@@ -193,7 +192,8 @@ def get_before_values(activity_id):
         start_time = datetime.now()
     else:
         unformatted_time = start_date + " " + start_hour
-        start_time = datetime.strptime(unformatted_time, "%d/%m/%Y %I:%M %p")
+        print unformatted_time
+        start_time = datetime.strptime(unformatted_time, "%m/%d/%Y %I:%M %p")
 
     new_occurrence = Occurrence(activity_id=activity_id,
                                 start_time=start_time,

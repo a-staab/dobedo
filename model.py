@@ -18,6 +18,7 @@ class User(db.Model):
         return "<User with user_id %s and email %s>" % (self.user_id,
                                                         self.email)
 
+    # Note to self: as a method, is called in form instance.method()
     def get_planned_occurrences(self):
         """Get all the incomplete occurrences for user."""
 
@@ -25,6 +26,18 @@ class User(db.Model):
                           .filter(Activity.user_id == self.user_id,
                                   (Occurrence.end_time.is_(None) |
                                    Occurrence.after_rating.is_(None)))
+                          .order_by(Occurrence.start_time)
+                          .all())
+
+    def get_completed_occurrences(self):
+        """Get all the complete occurrences for user."""
+
+        return (db.session.query(Occurrence).join(Activity)
+                          .filter(Activity.user_id == self.user_id,
+                                  Occurrence.end_time.isnot(None),
+                                  Occurrence.after_rating.isnot(None),
+                                  Occurrence.start_time.isnot(None),
+                                  Occurrence.before_rating.isnot(None))
                           .order_by(Occurrence.start_time)
                           .all())
 

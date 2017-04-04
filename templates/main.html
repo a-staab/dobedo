@@ -20,19 +20,19 @@
         </select> <input type="submit" value="Begin">
     </form>
     </p>
-    <div><h2>Planned Activities</h2>
-        <!-- Loop through occurrences without end times & before ratings as links to page to record_after-->
-        {% for occurrence in planned_by_start_time %}
-        {{ occurrence }}
+    <h2>Planned Activities</h2>
+    <ul>
+        {% for occurrence in planned_occurrences %}
+        <li><a href="/record_after/{{ occurrence.activity_id }}">{{ occurrence.start_time.strftime("%m/%d/%Y %l:%M %p") }}</a></li>
         {% endfor %}
-    </div>
-
+<!--         <a href="/record_after/< value for activity_type for each occurrence" > </a>
+ -->    </ul>
     <div><h2>Results</h2>
 
         <table>
         <!-- For now, this is a table showing before_rating and after_rating for
         all occurrences with start and end times and a rating for before and after -->
-
+        </table>
     </div>
 
 </body>
