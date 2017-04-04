@@ -3,15 +3,19 @@
 <head>
     <title>Finish Your Entry</title>
 </head>
-    <form action="/record_after/{{ activity_id }}", method="POST">
+    <form action="/record_after/{{ occurrence_id }}", method="POST">
     <p>When did you finish?
         <br>
         <br>
-        <button type="button" id="now" name="end_time">Now</button> or <input type=text name="end_time">
+        <button type="button" id="now" name="choose-now">Now</button> or
+        <input type=text name="end-time" id="end-time" placeholder="12:00 pm"> 
+        <!--TODO Nice to have: pass datetime.now + 24 hrs from route for below placeholder-->
+        <input type=text name="end-date" id="end-date" placeholder="12/31/2017">
+        <!-- or other datetime dropdown or entry field for later times -->
         <br>
-        <br>
+        <br> 
         How did you feel about it? 
-        <select name="after_rating">
+        <select name="after-rating">
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>

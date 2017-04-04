@@ -155,7 +155,7 @@ def show_main_page():
     activities = Activity.query.filter(Activity.user_id == session['user_id']).all()
 
     # Get list of user's occurrences without end times & before ratings
-    user = User.query.filter(User.user_id == session['user_id']).first()
+    user = User.query.filter(User.user_id == session['user_id']).one()
     planned_occurrences = user.get_planned_occurrences()
 
     return render_template("/main.html",
@@ -184,15 +184,14 @@ def get_before_values(activity_id):
     """Process form, creating a new occurrence and saving it to the database."""
 
     before_rating = request.form.get("before-rating")
-    now_start = request.form.get("now-start")
+    choose_now = request.form.get("choose-now")
     start_hour = request.form.get("planned-time")
     start_date = request.form.get("planned-date")
 
-    if now_start:
+    if choose_now:
         start_time = datetime.now()
     else:
         unformatted_time = start_date + " " + start_hour
-        print unformatted_time
         start_time = datetime.strptime(unformatted_time, "%m/%d/%Y %I:%M %p")
 
     new_occurrence = Occurrence(activity_id=activity_id,
@@ -205,16 +204,42 @@ def get_before_values(activity_id):
     flash("Entries successfully saved.")
     return redirect("/main")
 
-# @app.route("/record_after/<activity_id>", methods=["GET"])
-# def display_after_form(activity_id):
 
-#     # CODE
+@app.route("/record_after/<occurrence_id>", methods=["GET"])
+def display_after_form(occurrence_id):
 
-# @app.route("/record_after/<activity_id>", methods=["POST"])
-# def get_after_values(activity_id):
+    return render_template("/record_after.html", occurrence_id=occurrence_id)
 
-#     after_rating = request.form.get("after_rating")
-#     end_time = request.form.get("end_time")
+
+@app.route("/record_after/<occurrence_id>", methods=["POST"])
+def get_after_values(occurrence_id):
+
+    after_rating = request.form.get("after-rating")
+    choose_now = request.form.get("choose-now")
+    end_hour = request.form.get("end-time")
+    end_date = request.form.get("end-date")
+
+    if choose_now:
+        end_time = datetime.now()
+    else:
+        unformatted_time = end_date + " " + end_hour
+        print "/n /n /n"
+        print unformatted_time
+        end_time = datetime.strptime(unformatted_time, "%m/%d/%Y %I:%M %p")
+
+    completed_occurrence = Occurrence.query.filter(Occurrence.occurrence_id == occurrence_id).one()
+
+    completed_occurrence.end_time = end_time
+    completed_occurrence.after_rating = after_rating
+
+    db.session.commit()
+
+    flash("Changes saved.")
+    return redirect("/main")
+
+
+
+
 
 
 
