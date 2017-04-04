@@ -18,6 +18,16 @@ class User(db.Model):
         return "<User with user_id %s and email %s>" % (self.user_id,
                                                         self.email)
 
+    def get_planned_occurrences(self):
+        """Get all the incomplete occurrences for user."""
+
+        return (db.session.query(Occurrence).join(Activity)
+                          .filter(Activity.user_id == self.user_id,
+                                  (Occurrence.end_time.is_(None) |
+                                   Occurrence.after_rating.is_(None)))
+                          .order_by(Occurrence.start_time)
+                          .all())
+
 
 class Activity(db.Model):
     """Activity. An activity has many occurrences."""
@@ -61,6 +71,7 @@ def connect_to_db(app):
 
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///tracker'
     app.config['SQLALCHEMY_ECHO'] = True
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = app
     db.init_app(app)
 

@@ -151,11 +151,17 @@ def signin_user():
 def show_main_page():
     """Load main page."""
 
+    # Get activities for dropdown menu for choosing one to plan
     activities = Activity.query.filter(Activity.user_id == session['user_id']).all()
 
-    return render_template("/main.html",
-                           # names_list=names_list,
-                           activities=activities)
+    # Get list of user's occurrences without end times & before ratings
+
+    user = User.query.filter(User.user_id == session['user_id']).first()
+    planned_occurrences = get_planned_occurrences(user)
+
+    # Now, need to get planned_occurrences.start_time and display as links
+
+    return render_template("/main.html", activities=activities, planned_by_start_time=planned_by_start_time)
 
 
 @app.route("/plan_activity", methods=["POST"])
