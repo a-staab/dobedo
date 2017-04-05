@@ -7,6 +7,16 @@ app = Flask(__name__)
 app.secret_key = "7SOIF280FSH9G0-SSKJ"
 
 
+@app.before_request
+def check_signed_in():
+
+    public_routes = ["/", "/signup", "/signin"]
+
+    if request.path not in public_routes and not session.get("user_id"):
+        flash("You need to be logged in to view this page. Please log in.")
+        return redirect("/signin")
+
+
 @app.route("/")
 def show_landing_page():
     """Return landing page."""
@@ -68,11 +78,6 @@ def create_activity_types():
     """Process setup form, adding user-defined activity types to database."""
 
     # TODO test user can add an activity :D Look up integration test.
-
-    # Make sure user is logged in
-    if session.get("user_id", 0) == 0:
-        flash("You need to be logged in to view this page. Please log in.")
-        return redirect("/signin")
 
     activity_1 = request.form.get("activity_1")
     activity_2 = request.form.get("activity_2")
@@ -140,6 +145,11 @@ def signin_user():
 
             flash("Thanks for logging in!")
             return redirect("/main")
+
+        else:
+            flash("Sorry, we didn't find an account with the email and password\
+            you provided. Please try again.")
+            return redirect("/signin")
 
     else:
         flash("Sorry, we didn't find an account with the email and password you\
