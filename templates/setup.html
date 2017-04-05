@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Setup</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block title %}Setup{% endblock %}
+{% block head %}{% endblock %}
+{% block content %}
 <h1>Create your custom activity types</h1>
 <p>
 Time to get started! What activities would you like to track? You can choose as 
@@ -23,5 +21,4 @@ picking activities you do at least a couple times per week.
     <input type="text" name="activity_10"><br><br>
     <input type="submit" value="Save">
 </form>
-</body>
-</html>
+{% endblock %}

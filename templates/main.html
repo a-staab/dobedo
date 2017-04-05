@@ -1,15 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Main</title>
-    <script src="http://code.jquery.com/jquery.js"></script>
-</head>
-<body>
-    <script>
-    </script>
+{% extends "base.html" %}
+{% block title %}Main{% endblock %}
+{% block head %}{% endblock %}
+{% block content %}
     <h1>Plan an Activity</h1>
     <p>
-
     <!-- Dropdown is populated by results of query for user activity types -->
     Pick an activity to begin tracking: 
     <form action="/plan_activity" method="POST">
@@ -42,6 +36,4 @@
             {% endfor %}
         </table>
     </div>
-
-</body>
-</html>
+{% endblock %}

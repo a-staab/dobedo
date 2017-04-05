@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Begin Your Entry</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block title %}Begin Your Entry{% endblock %}
+{% block head %}{% endblock %}
+{% block content %}
     <form action="/record_before/{{ activity_id }}", method="POST">
     <p>When do you plan to start?
         <br>
@@ -31,5 +29,4 @@
         <br>
         <input type="submit" value="Save">
     </form>
-</body>
-</html>
+{% endblock %}

@@ -1,16 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Create Your Account</title>
-</head>
-<body>
-<h1>Create your account</h1>
-<form action="/signup" method="POST">
-    <input type="text" name="username" placeholder="Username" required><br>
-    <input type="text" name="password" placeholder="Password" required><br>
-    <input type="text" name="email" placeholder="Email" required><br>
-    <input type="text" name="age" placeholder="Age (optional)"><br><br>
-    <input type="submit" value="Save">
-</form>
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}Create Your Account{% endblock %}
+{% block head %}{% endblock %}
+{% block content %}
+    <h1>Create your account</h1>
+    <form action="/signup" method="POST">
+        <input type="text" name="username" placeholder="Username" required><br>
+        <input type="text" name="password" placeholder="Password" required><br>
+        <input type="text" name="email" placeholder="Email" required><br>
+        <input type="text" name="age" placeholder="Age (optional)"><br><br>
+        <input type="submit" value="Save">
+    </form>
+{% endblock %}

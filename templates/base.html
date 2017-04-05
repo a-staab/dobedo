@@ -1,12 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{% block title %}---Replace with Page Title---{% endblock %}</title>
     <link rel="stylesheet" href="/static/css/styles.css">
     <script src="http://code.jquery.com/jquery.js"></script>
+    <title>{% block title %}{% endblock %}</title>
+    {% block head %}{% endblock %}   
 </head>
 <body>
-<h1>APP NAME</h1>
-{% block content %}---Replace with body!----{% endblock %}
+    <nav><h4>APP NAME</h4></nav>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+    {% endwith %}
+{% block content %}{% endblock %}
 </body>
 </html>
