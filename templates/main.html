@@ -27,10 +27,19 @@
         {% endfor %}
     </ul>
     <div><h2>Results</h2>
-
-        <table>
-        <!-- For now, this is a table showing before_rating and after_rating for
-        all occurrences with start and end times and a rating for before and after -->
+        <table border="1px">
+            <th>Start Time</th>
+            <th>Before</th>
+            <th>After</th>
+            <th>Activity</th>
+            {% for occurrence in completed_occurrences %}
+            <tr>
+                <td>{{ occurrence.start_time.strftime("%m/%d/%Y %l:%M %p") }}</td>
+                <td>{{ occurrence.before_rating }}</td>
+                <td>{{ occurrence.after_rating }}</td>
+                <td>{{ occurrence.activity.activity_type }}</td>
+            </tr>
+            {% endfor %}
         </table>
     </div>
 

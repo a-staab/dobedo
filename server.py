@@ -158,9 +158,12 @@ def show_main_page():
     user = User.query.filter(User.user_id == session['user_id']).one()
     planned_occurrences = user.get_planned_occurrences()
 
+    completed_occurrences = user.get_completed_occurrences()
+
     return render_template("/main.html",
                            activities=activities,
-                           planned_occurrences=planned_occurrences)
+                           planned_occurrences=planned_occurrences,
+                           completed_occurrences=completed_occurrences)
 
 
 @app.route("/plan_activity", methods=["POST"])
@@ -223,8 +226,6 @@ def get_after_values(occurrence_id):
         end_time = datetime.now()
     else:
         unformatted_time = end_date + " " + end_hour
-        print "/n /n /n"
-        print unformatted_time
         end_time = datetime.strptime(unformatted_time, "%m/%d/%Y %I:%M %p")
 
     completed_occurrence = Occurrence.query.filter(Occurrence.occurrence_id == occurrence_id).one()
@@ -236,11 +237,6 @@ def get_after_values(occurrence_id):
 
     flash("Changes saved.")
     return redirect("/main")
-
-
-
-
-
 
 
 # For additional routes, a stub:
