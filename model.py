@@ -88,9 +88,8 @@ def connect_to_db(app):
     db.app = app
     db.init_app(app)
 
+
 # Helper functions
-
-
 def create_new_user(email, password, user_handle, age=None):
 
     return User(email=email,
@@ -125,18 +124,6 @@ def example_data():
                password='python',
                user_handle='melons_honcho',
                age=42)
-
-    # ______ Move to these two to tests.py because they require session? _______
-    # # Test activity setup, which requires session data
-    # active_activity = Activity(activity_type='coding',
-    #                            user_id=session["user_id"])
-
-    # # Test is_active can be specified too (though this change wouldn't normally
-    # # be set at creation time)
-    # inactive_activity = Activity(activity_type='coding',
-    #                              user_id=session["user_id"],
-    #                              is_active=False)
-    # _________________________________________________________________________
 
     # Test that an occurrence can be created without end_time, after_rating, and
     # notes

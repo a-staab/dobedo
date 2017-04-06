@@ -3,7 +3,30 @@ from server import app
 from model import db, connect_to_db, example_data
 
 
-class Test(TestCase):
+class Test_Signed_Out(TestCase):
+
+    def setUp(self):
+        """Do this before each test."""
+
+        app.config['TESTING'] = True
+        app.config['SECRET_KEY'] = 'key'
+        self.client = app.test_client()
+
+        # Connect to test database
+        connect_to_db(app, "postgresql:///test_database")
+
+        # Create tables and add sample data
+        db.create.all()
+        example_data()
+
+    def tearDown(self):
+        """Do this after every test."""
+
+        db.session.close()
+        db.drop_all()
+
+
+class Test_Signed_In(TestCase):
 
     def setUp(self):
         """Do this before each test."""
@@ -37,8 +60,19 @@ class Test(TestCase):
 
     def t_create_activity_types(self):
 
-        result = self.client.post("/setup", data={"activity_type": "rowing",
+        result = self.client.post("/setup", data={"activity_type": "coding",
                                   "user_id": "session[\"user_id\"]"},
                                   follow_redirects=True)
-        # Change 'Main Page' below once main page is built
-        self.assertIn('Main Page', result.data)
+        # Change 'Results' below once final copy and data viz are complete
+        self.assertIn('Results', result.data)
+
+    # def t_create
+    # # Test activity setup, which requires session data
+    # active_activity = Activity(activity_type='coding',
+    #                            user_id=session["user_id"])
+
+    # # Test is_active can be specified too (though this change wouldn't normally
+    # # be set at creation time)
+    # inactive_activity = Activity(activity_type='coding',
+    #                              user_id=session["user_id"],
+    #                              is_active=False)
