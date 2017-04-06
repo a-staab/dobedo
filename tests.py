@@ -1,9 +1,9 @@
-from unittest import TestCase
+import unittest
 from server import app
 from model import db, connect_to_db, example_data
 
 
-class Test_Signed_Out(TestCase):
+class Test(unittest.TestCase):
 
     def setUp(self):
         """Do this before each test."""
@@ -26,31 +26,16 @@ class Test_Signed_Out(TestCase):
         db.drop_all()
 
 
-class Test_Signed_In(TestCase):
+class Test_Signed_In(Test):
 
     def setUp(self):
         """Do this before each test."""
 
-        app.config['TESTING'] = True
-        app.config['SECRET_KEY'] = 'key'
-        self.client = app.test_client()
+        super(Test, self).setUp()   # Get more info
 
         with self.client as c:
             with c.session_transaction() as sess:
                 sess['user_id'] = 1
-
-        # Connect to test database
-        connect_to_db(app, "postgresql:///test_database")
-
-        # Create tables and add sample data
-        db.create.all()
-        example_data()
-
-    def tearDown(self):
-        """Do this after every test."""
-
-        db.session.close()
-        db.drop_all()
 
     def t_request_activity_types(self):
 
@@ -76,3 +61,5 @@ class Test_Signed_In(TestCase):
     # inactive_activity = Activity(activity_type='coding',
     #                              user_id=session["user_id"],
     #                              is_active=False)
+if __name__ == '__main__':
+    unittest.main()
