@@ -3,39 +3,69 @@
 from model import User, Activity, Occurrence, connect_to_db, db
 from server import app
 
+
 def load_users():
     """Load users from u.user into database."""
 
-    print "Users"
+    for i, row in enumerate(open("seed_data/u.user")):
+        row = row.rstrip()
+        email, password, user_handle, age = row.split("|")
+        if age == '':
+            age = None
+
+        user = User(email=email,
+                    password=password,
+                    user_handle=user_handle,
+                    age=age)
+
+        db.session.add(user)
+
+    db.session.commit()
+
 
 def load_activities():
     """Load activities from u.activity into database."""
 
-    print "Activities"
+    for i, row in enumerate(open("seed_data/u.activity")):
+        row = row.rstrip()
+        activity_type, user_id = row.split("|")
+
+        activity = Activity(activity_type=activity_type, user_id=user_id)
+
+        db.session.add(activity)
+
+    db.session.commit()
+
 
 def load_occurrences():
     """Load occurrences from u.occurrence into database."""
 
-    print "Occurrences"
+    for i, row in enumerate(open("seed_data/u.occurrence")):
+        row = row.rstrip()
+        print row
+        (activity_id, start_time, end_time, before_rating, after_rating,
+            notes) = row.split("|")
+        if notes == '':
+            notes = None
 
-def set_val_user_id():
-    """Set value for the next user_id after seeding database"""
+        occurrence = Occurrence(activity_id=activity_id,
+                                start_time=start_time,
+                                end_time=end_time,
+                                before_rating=before_rating,
+                                after_rating=after_rating,
+                                notes=notes)
 
-    # Get the Max user_id in the database
-    result = db.session.query(func.max(User.user_id)).one()
-    max_id = int(result[0])
+        db.session.add(occurrence)
 
-    # Set the value for the next user_id to be max_id + 1
-    query = "SELECT setval('users_user_id_seq', :new_id)"
-    db.session.execute(query, {'new_id': max_id + 1})
     db.session.commit()
 
 
 if __name__ == "__main__":
     connect_to_db(app)
+    db.drop_all()
     db.create_all()
 
     load_users()
     load_activities()
     load_occurrences()
-    set_val_user_id()
+    # set_val_user_id()

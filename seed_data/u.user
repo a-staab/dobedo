@@ -1,5 +1,3 @@
-email | password | user_handle | age
-
-kjohnson@hackbright.com | flask | k_johnson | 29
-ada@hackbright.com | SQLAlchemy | a_lovelace | 21
-cbabbage@hackbright.com | python | c_babbage |
+kjohnson@hackbright.com|flask|k_johnson|29
+ada@hackbright.com|SQLAlchemy|a_lovelace|21
+cbabbage@hackbright.com|python|c_babbage|

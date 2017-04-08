@@ -37,6 +37,11 @@ class Test_Signed_In(Test):
             with c.session_transaction() as sess:
                 sess['user_id'] = 1
 
+    def tearDown(self):
+        """Do this after every test."""
+
+        super(Test, self).tearDown()
+
     def t_request_activity_types(self):
 
         result = self.client.get("/setup")
