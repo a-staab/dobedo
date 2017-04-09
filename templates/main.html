@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Main{% endblock %}
-{% block head %}{% endblock %}
+{% block head %}<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.js"></script>{% endblock %}
 {% block content %}
     <h1>Plan an Activity</h1>
     <p>
@@ -36,4 +36,38 @@
             {% endfor %}
         </table>
     </div>
+<canvas id="chart_1" width="200" height="100"></canvas>
+<script>
+var options = {};
+
+$.get("/chart/activity_id_15.json", makeChart);
+
+function makeChart(results) {
+    var beforeRatings = results.before;
+    var afterRatings = results.after;
+    var startTimes = results.starts;
+    var ctx = $("#chart_1");
+    var chart_1 = new Chart(ctx, {
+        type: 'bar',
+        data: {
+                labels: startTimes,
+                datasets: [
+                    {
+                        type: "line", 
+                        label: "How You Felt Beforehand", 
+                        data: beforeRatings,
+                        backgroundColor: "rgba(153,255,51,0.4)"
+                    },
+                    {
+                        type: "line",
+                        label: "How You Felt Afterward",
+                        data: afterRatings,
+                        backgroundColor: "rgba(255,153,0,0.4)"
+                    }
+                ]
+            }
+        });
+};
+</script>
+
 {% endblock %}

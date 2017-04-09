@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, flash, session
+from flask import Flask, request, render_template, redirect, flash, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from model import db, User, Activity, Occurrence, connect_to_db
 from datetime import datetime
@@ -247,6 +247,19 @@ def get_after_values(occurrence_id):
 
     flash("Changes saved.")
     return redirect("/main")
+
+
+# Get activities in order to display a chart for each of user's activities
+# TODO: activities = Activity.query.filter(Activity.user_id == session['user_id']).all()
+@app.route("/chart/activity_id_15.json")
+def make_lines_chart_json():
+    """Return json with before_ratings, after_ratings, and start_times"""
+    # TODO: Generalize this to make_lines_chart_json(activity_id), replacing the hard-coded "15" in the query
+    completed_occurrences = db.session.query(Occurrence).join(Activity).filter(Activity.user_id == session['user_id'], Occurrence.end_time.isnot(None), Occurrence.after_rating.isnot(None), Occurrence.start_time.isnot(None), Occurrence.before_rating.isnot(None), Activity.activity_id == 15).order_by(Occurrence.start_time).all()
+    before_ratings = [occurrence.before_rating for occurrence in completed_occurrences]
+    after_ratings = [occurrence.after_rating for occurrence in completed_occurrences]
+    start_times = [occurrence.start_time for occurrence in completed_occurrences]
+    return jsonify({"before": before_ratings, "after": after_ratings, "starts": start_times})
 
 
 # For additional routes, a stub:
