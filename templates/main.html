@@ -48,18 +48,16 @@ function makeChart(results) {
     var startTimes = results.starts;
     var ctx = $("#chart_1");
     var chart_1 = new Chart(ctx, {
-        type: 'bar',
+        type: 'line',
         data: {
                 labels: startTimes,
                 datasets: [
                     {
-                        type: "line", 
                         label: "How You Felt Beforehand", 
                         data: beforeRatings,
                         backgroundColor: "rgba(153,255,51,0.4)"
                     },
                     {
-                        type: "line",
                         label: "How You Felt Afterward",
                         data: afterRatings,
                         backgroundColor: "rgba(255,153,0,0.4)"

@@ -8,15 +8,14 @@ class Test(unittest.TestCase):
     def setUp(self):
         """Do this before each test."""
 
-        app.config['TESTING'] = True
-        app.config['SECRET_KEY'] = 'key'
         self.client = app.test_client()
+        app.config['TESTING'] = True
 
         # Connect to test database
         connect_to_db(app, "postgresql:///test_database")
 
         # Create tables and add sample data
-        db.create.all()
+        db.create_all()
         example_data()
 
     def tearDown(self):
@@ -25,13 +24,37 @@ class Test(unittest.TestCase):
         db.session.close()
         db.drop_all()
 
+    def test_signup_page_render(self):
+        """Tests that signup page loads."""
+
+        result = self.client.get("/signup")
+        self.assertEqual(result.status_code, 200)
+        self.assertIn("Create your", result.data)
+
+    def test_signin_page_render(self):
+        """Tests that sign-in page loads."""
+
+        result = self.client.get("/signin")
+        self.assertEqual(result.status_code, 200)
+        self.assertIn("to your account", result.data)
+
+    # def test_create_new_user(self):
+    #     """Tests database for existence of user created using create_new_user
+    #     helper function."""
+
+    #     result = User.query.filter(User.email == 'hb-student@hackbright.com').one()
+    #     self.assertIn('with user_id', result.data)
+
 
 class Test_Signed_In(Test):
 
     def setUp(self):
         """Do this before each test."""
 
-        super(Test, self).setUp()   # Get more info
+        super(Test, self).setUp()
+
+        app.config['SECRET_KEY'] = 'key'
+        self.client = app.test_client()
 
         with self.client as c:
             with c.session_transaction() as sess:
@@ -42,29 +65,30 @@ class Test_Signed_In(Test):
 
         super(Test, self).tearDown()
 
-    def t_request_activity_types(self):
+    def test_request_activity_types(self):
+        """Tests activity setup page loads."""
 
         result = self.client.get("/setup")
         self.assertEqual(result.status_code, 200)
         self.assertIn('usually ideal', result.data)
 
-    def t_create_activity_types(self):
+    def test_create_activity_types(self):
+        """Tests user can specify an activity type for tracking from setup page.
+        """
 
-        result = self.client.post("/setup", data={"activity_type": "coding",
-                                  "user_id": "session[\"user_id\"]"},
+        result = self.client.post("/setup", data={"activity_1": "coding",
+                                  "user_id": "session['user_id']"},
                                   follow_redirects=True)
         # Change 'Results' below once final copy and data viz are complete
         self.assertIn('Results', result.data)
 
-    # def t_create
-    # # Test activity setup, which requires session data
-    # active_activity = Activity(activity_type='coding',
-    #                            user_id=session["user_id"])
+    def test_main_page_render(self):
+        """Tests that main page loads."""
 
-    # # Test is_active can be specified too (though this change wouldn't normally
-    # # be set at creation time)
-    # inactive_activity = Activity(activity_type='coding',
-    #                              user_id=session["user_id"],
-    #                              is_active=False)
+        result = self.client.get("/main")
+        self.assertEqual(result.status_code, 200)
+        self.assertIn("activity to begin tracking", result.data)
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -9,6 +9,8 @@ app.secret_key = "7SOIF280FSH9G0-SSKJ"
 
 @app.before_request
 def check_signed_in():
+    """Check that user is logged in before loading pages which should only be
+    accessible when logged in. If not, redirect to sign-in page."""
 
     public_routes = ["/", "/signup", "/signin"]
 
@@ -63,6 +65,9 @@ def signup_user():
         db.session.add(new_user)
         db.session.commit()
 
+        user_id = User.query.filter(User.email == email).one().user_id
+        session["user_id"] = user_id
+
     return redirect("/setup")
 
 
@@ -102,7 +107,7 @@ def create_activity_types():
     # Handle submission of form with no values
     if new_activities == []:
 
-        flash("""You need to enter at least one activity to contine.
+        flash("""You need to enter at least one activity to continue.
               Please make a selection and try again.""")
         return redirect("/setup")
 
@@ -220,12 +225,14 @@ def get_before_values(activity_id):
 
 @app.route("/record_after/<occurrence_id>", methods=["GET"])
 def display_after_form(occurrence_id):
+    """Display form for completing record of a previously created occurrence."""
 
     return render_template("/record_after.html", occurrence_id=occurrence_id)
 
 
 @app.route("/record_after/<occurrence_id>", methods=["POST"])
 def get_after_values(occurrence_id):
+    """Process form for completing record of a previously created occurrence."""
 
     after_rating = request.form.get("after-rating")
     choose_now = request.form.get("choose-now")
