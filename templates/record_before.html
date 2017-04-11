@@ -2,6 +2,7 @@
 {% block title %}Begin Your Entry{% endblock %}
 {% block head %}{% endblock %}
 {% block content %}
+
     <form action="/record_before/{{ activity_id }}", method="POST">
     <p>When do you plan to start?
         <br>
@@ -29,4 +30,13 @@
         <br>
         <input type="submit" value="Save">
     </form>
+    <script>
+
+   function chooseNow(evt) {
+        console.log('reached this function');
+        $('#planned-time').val("{{ now_time }}");
+        $('#planned-date').val("{{ now_date }}");
+    }
+    $('#now').on('click', chooseNow);
+    </script>
 {% endblock %}

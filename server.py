@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, redirect, flash, session, jso
 from flask_debugtoolbar import DebugToolbarExtension
 from model import db, User, Activity, Occurrence, connect_to_db
 from datetime import datetime
+import pytz
 
 app = Flask(__name__)
 app.secret_key = "7SOIF280FSH9G0-SSKJ"
@@ -200,7 +201,15 @@ def handle_activity_choice():
 def display_before_form(activity_id):
     """Display form for creating a new occurrence."""
 
-    return render_template("/record_before.html", activity_id=activity_id)
+    pacific = pytz.timezone('US/Pacific')
+    now = datetime.now(tz=pacific)
+    now_date = datetime.strftime(now, "%m/%d/%Y")
+    now_time = datetime.strftime(now, "%I:%M %p")
+
+    return render_template("/record_before.html",
+                           activity_id=activity_id,
+                           now_date=now_date,
+                           now_time=now_time)
 
 
 @app.route("/record_before/<activity_id>", methods=["POST"])
@@ -232,6 +241,8 @@ def get_before_values(activity_id):
 @app.route("/record_after/<occurrence_id>", methods=["GET"])
 def display_after_form(occurrence_id):
     """Display form for completing record of a previously created occurrence."""
+
+
 
     return render_template("/record_after.html", occurrence_id=occurrence_id)
 
