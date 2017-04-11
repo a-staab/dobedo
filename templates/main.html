@@ -20,7 +20,9 @@
         <li><a href="/record_after/{{ occurrence.occurrence_id }}">{{ occurrence.start_time.strftime("%m/%d/%Y %l:%M %p") }}</a></li>
         {% endfor %}
     </ul>
-    <div><h2>Results</h2>
+    <h2>Results</h2>
+<!--This is an artifact from my MVP - meant as a placeholder, standing in for data viz.
+    <div>
         <table border="1px">
             <th>Start Time</th>
             <th>Before</th>
@@ -35,7 +37,7 @@
             </tr>
             {% endfor %}
         </table>
-    </div>
+    </div> -->
 
 {% for activity_id in used_activity_ids %}
     <canvas id="{{ activity_id }}" width="200" height="100" class="chart-canvas"></canvas>

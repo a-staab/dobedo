@@ -82,8 +82,6 @@ def request_activity_types():
 def create_activity_types():
     """Process setup form, adding user-defined activity types to database."""
 
-    # TODO test user can add an activity :D Look up integration test.
-
     activity_1 = request.form.get("activity_1")
     activity_2 = request.form.get("activity_2")
     activity_3 = request.form.get("activity_3")
@@ -265,7 +263,9 @@ def get_after_values(occurrence_id):
 
 @app.route("/chart/<activity_id>.json")
 def make_lines_chart_json(activity_id):
-    """Return json with before_ratings, after_ratings, and start_times"""
+    """Return json with the data needed to render charts for all activities with
+    completed occurrences."""
+
     completed_occurrences = db.session.query(Occurrence).join(Activity).filter(Activity.user_id == session['user_id'], Occurrence.end_time.isnot(None), Occurrence.after_rating.isnot(None), Occurrence.start_time.isnot(None), Occurrence.before_rating.isnot(None), Activity.activity_id == activity_id).order_by(Occurrence.start_time).all()
     before_ratings = [occurrence.before_rating for occurrence in completed_occurrences]
     after_ratings = [occurrence.after_rating for occurrence in completed_occurrences]
