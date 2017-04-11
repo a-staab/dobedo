@@ -36,17 +36,26 @@
             {% endfor %}
         </table>
     </div>
-<canvas id="chart_1" width="200" height="100"></canvas>
-<script>
-var options = {};
 
-$.get("/chart/activity_id_15.json", makeChart);
+{% for activity_id in used_activity_ids %}
+    <canvas id="{{ activity_id }}" width="200" height="100" class="chart-canvas"></canvas>
+{% endfor %}
+
+<script>
+
+var options = {};
+var canvases = $('.chart-canvas');
+
+for (var canvas of canvases) {
+    $.get("/chart/" + canvas.id + ".json", makeChart);
+}
 
 function makeChart(results) {
     var beforeRatings = results.before;
     var afterRatings = results.after;
     var startTimes = results.starts;
-    var ctx = $("#chart_1");
+    var activityId = results.activityId;
+    var ctx = $('#' + activityId);
     var chart_1 = new Chart(ctx, {
         type: 'line',
         data: {

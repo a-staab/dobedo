@@ -175,10 +175,17 @@ def show_main_page():
 
     completed_occurrences = user.get_completed_occurrences()
 
+    used_activity_ids = set([])
+    for occurrences in completed_occurrences:
+        used_activity_ids.add(occurrences.activity_id)
+
+    used_activity_ids = sorted(used_activity_ids)
+
     return render_template("/main.html",
                            activities=activities,
                            planned_occurrences=planned_occurrences,
-                           completed_occurrences=completed_occurrences)
+                           completed_occurrences=completed_occurrences,
+                           used_activity_ids=used_activity_ids)
 
 
 @app.route("/plan_activity", methods=["POST"])
@@ -256,17 +263,14 @@ def get_after_values(occurrence_id):
     return redirect("/main")
 
 
-# Get activities in order to display a chart for each of user's activities
-# TODO: activities = Activity.query.filter(Activity.user_id == session['user_id']).all()
-@app.route("/chart/activity_id_15.json")
-def make_lines_chart_json():
+@app.route("/chart/<activity_id>.json")
+def make_lines_chart_json(activity_id):
     """Return json with before_ratings, after_ratings, and start_times"""
-    # TODO: Generalize this to make_lines_chart_json(activity_id), replacing the hard-coded "15" in the query
-    completed_occurrences = db.session.query(Occurrence).join(Activity).filter(Activity.user_id == session['user_id'], Occurrence.end_time.isnot(None), Occurrence.after_rating.isnot(None), Occurrence.start_time.isnot(None), Occurrence.before_rating.isnot(None), Activity.activity_id == 15).order_by(Occurrence.start_time).all()
+    completed_occurrences = db.session.query(Occurrence).join(Activity).filter(Activity.user_id == session['user_id'], Occurrence.end_time.isnot(None), Occurrence.after_rating.isnot(None), Occurrence.start_time.isnot(None), Occurrence.before_rating.isnot(None), Activity.activity_id == activity_id).order_by(Occurrence.start_time).all()
     before_ratings = [occurrence.before_rating for occurrence in completed_occurrences]
     after_ratings = [occurrence.after_rating for occurrence in completed_occurrences]
     start_times = [occurrence.start_time for occurrence in completed_occurrences]
-    return jsonify({"before": before_ratings, "after": after_ratings, "starts": start_times})
+    return jsonify({"before": before_ratings, "after": after_ratings, "starts": start_times, "activityId": activity_id})
 
 
 # For additional routes, a stub:
