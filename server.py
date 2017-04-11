@@ -203,7 +203,7 @@ def display_before_form(activity_id):
 
     pacific = pytz.timezone('US/Pacific')
     now = datetime.now(tz=pacific)
-    now_date = datetime.strftime(now, "%m/%d/%Y")
+    now_date = datetime.strftime(now, "%Y-%m-%d")
     now_time = datetime.strftime(now, "%I:%M %p")
 
     return render_template("/record_before.html",
