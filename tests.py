@@ -51,7 +51,7 @@ class Test_Signed_In(Test):
     def setUp(self):
         """Do this before each test."""
 
-        super(Test, self).setUp()
+        super(Test_Signed_In, self).setUp()
 
         app.config['SECRET_KEY'] = 'key'
         self.client = app.test_client()
@@ -63,7 +63,7 @@ class Test_Signed_In(Test):
     def tearDown(self):
         """Do this after every test."""
 
-        super(Test, self).tearDown()
+        super(Test_Signed_In, self).tearDown()
 
     def test_request_activity_types(self):
         """Tests activity setup page loads."""
@@ -76,8 +76,17 @@ class Test_Signed_In(Test):
         """Tests user can specify an activity type for tracking from setup page.
         """
 
-        result = self.client.post("/setup", data={"activity_1": "coding",
-                                  "user_id": "session['user_id']"},
+        result = self.client.post("/setup",
+                                  data={"activity_1": "coding",
+                                        "activity_2": "",
+                                        "activity_3": "",
+                                        "activity_4": "",
+                                        "activity_5": "",
+                                        "activity_6": "",
+                                        "activity_7": "",
+                                        "activity_8": "",
+                                        "activity_9": "",
+                                        "activity_10": ""},
                                   follow_redirects=True)
         # Change 'Results' below once final copy and data viz are complete
         self.assertIn('Results', result.data)

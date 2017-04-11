@@ -79,10 +79,10 @@ class Occurrence(db.Model):
             self.occurrence_id, self.activity_id)
 
 
-def connect_to_db(app):
+def connect_to_db(app, db_uri='postgresql:///tracker'):
     """Connect to the database."""
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///tracker'
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     app.config['SQLALCHEMY_ECHO'] = True
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = app
@@ -143,6 +143,6 @@ def example_data():
     db.session.commit()
 
 if __name__ == "__main__":
-    from server import app, session
+    from server import app
     connect_to_db(app)
     print "Connected to DB! Woo!"

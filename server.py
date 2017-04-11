@@ -81,6 +81,7 @@ def request_activity_types():
 @app.route("/setup", methods=["POST"])
 def create_activity_types():
     """Process setup form, adding user-defined activity types to database."""
+    print request.form
 
     activity_1 = request.form.get("activity_1")
     activity_2 = request.form.get("activity_2")
