@@ -2,6 +2,7 @@
 {% block title %}Finish Your Entry{% endblock %}
 {% block head %}{% endblock %}
 {% block content %}
+<h4><i>{{ activity_name }}</i></h4>
     <p>When did you finish?
     </p>
     <form action="/record_after/{{ occurrence_id }}", method="POST">

@@ -216,6 +216,10 @@ def display_before_form(activity_id):
 def get_before_values(activity_id):
     """Process form, creating a new occurrence and saving it to the database."""
 
+    # Get activity_type to display as a heading
+    occurrence = Occurrence.query.filter(Occurrence.occurrence_id == occurrence_id).one()
+    activity_name = occurrence.activity.activity_type
+
     before_rating = request.form.get("before-rating")
     start_hour = request.form.get("planned-time")
     start_date = request.form.get("planned-date")
@@ -225,7 +229,8 @@ def get_before_values(activity_id):
 
     new_occurrence = Occurrence(activity_id=activity_id,
                                 start_time=start_time,
-                                before_rating=before_rating)
+                                before_rating=before_rating,
+                                activity_name=activity_name)
 
     db.session.add(new_occurrence)
     db.session.commit()
@@ -238,6 +243,10 @@ def get_before_values(activity_id):
 def display_after_form(occurrence_id):
     """Display form for completing record of a previously created occurrence."""
 
+    # Get activity_type to display as a heading
+    occurrence = Occurrence.query.filter(Occurrence.occurrence_id == occurrence_id).one()
+    activity_name = occurrence.activity.activity_type
+
     pacific = pytz.timezone('US/Pacific')
     now = datetime.now(tz=pacific)
     now_date = datetime.strftime(now, "%Y-%m-%d")
@@ -246,7 +255,8 @@ def display_after_form(occurrence_id):
     return render_template("/record_after.html",
                            occurrence_id=occurrence_id,
                            now_date=now_date,
-                           now_time=now_time)
+                           now_time=now_time,
+                           activity_name=activity_name)
 
 
 @app.route("/record_after/<occurrence_id>", methods=["POST"])
