@@ -217,15 +217,11 @@ def get_before_values(activity_id):
     """Process form, creating a new occurrence and saving it to the database."""
 
     before_rating = request.form.get("before-rating")
-    choose_now = request.form.get("choose-now")
     start_hour = request.form.get("planned-time")
     start_date = request.form.get("planned-date")
 
-    if choose_now:
-        start_time = datetime.now()
-    else:
-        unformatted_time = start_date + " " + start_hour
-        start_time = datetime.strptime(unformatted_time, "%m/%d/%Y %I:%M %p")
+    unformatted_time = start_date + " " + start_hour
+    start_time = datetime.strptime(unformatted_time, "%Y-%m-%d %I:%M %p")
 
     new_occurrence = Occurrence(activity_id=activity_id,
                                 start_time=start_time,
@@ -242,9 +238,15 @@ def get_before_values(activity_id):
 def display_after_form(occurrence_id):
     """Display form for completing record of a previously created occurrence."""
 
+    pacific = pytz.timezone('US/Pacific')
+    now = datetime.now(tz=pacific)
+    now_date = datetime.strftime(now, "%Y-%m-%d")
+    now_time = datetime.strftime(now, "%I:%M %p")
 
-
-    return render_template("/record_after.html", occurrence_id=occurrence_id)
+    return render_template("/record_after.html",
+                           occurrence_id=occurrence_id,
+                           now_date=now_date,
+                           now_time=now_time)
 
 
 @app.route("/record_after/<occurrence_id>", methods=["POST"])
@@ -252,15 +254,11 @@ def get_after_values(occurrence_id):
     """Process form for completing record of a previously created occurrence."""
 
     after_rating = request.form.get("after-rating")
-    choose_now = request.form.get("choose-now")
     end_hour = request.form.get("end-time")
     end_date = request.form.get("end-date")
 
-    if choose_now:
-        end_time = datetime.now()
-    else:
-        unformatted_time = end_date + " " + end_hour
-        end_time = datetime.strptime(unformatted_time, "%m/%d/%Y %I:%M %p")
+    unformatted_time = end_date + " " + end_hour
+    end_time = datetime.strptime(unformatted_time, "%Y-%m-%d %I:%M %p")
 
     completed_occurrence = Occurrence.query.filter(Occurrence.occurrence_id == occurrence_id).one()
 
@@ -283,6 +281,14 @@ def make_lines_chart_json(activity_id):
     after_ratings = [occurrence.after_rating for occurrence in completed_occurrences]
     start_times = [occurrence.start_time for occurrence in completed_occurrences]
     return jsonify({"before": before_ratings, "after": after_ratings, "starts": start_times, "activityId": activity_id})
+
+
+@app.route("/signout", methods=["GET"])
+def signout_user():
+    """Signs user out and redirects to landing page."""
+
+    del session['user_id']
+    return redirect("/")
 
 
 # For additional routes, a stub:

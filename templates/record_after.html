@@ -1,19 +1,17 @@
-zZ<!DOCTYPE html>
-<html>
-<head>
-    <title>Finish Your Entry</title>
-</head>
-    <form action="/record_after/{{ occurrence_id }}", method="POST">
+{% extends "base.html" %}
+{% block title %}Finish Your Entry{% endblock %}
+{% block head %}{% endblock %}
+{% block content %}
     <p>When did you finish?
-        <br>
-        <br>
-        <button type="button" id="now" name="choose-now">Now</button> or
-        <input type=text name="end-time" id="end-time" placeholder="12:00 pm"> 
+    </p>
+    <form action="/record_after/{{ occurrence_id }}", method="POST">
+        <button type="button" id="now-after" name="choose-now">Now</button> or
+        <input type=text name="end-time" id="end-time" placeholder="e.g, 12:00 pm"> 
         <!--TODO Nice to have: pass datetime.now + 24 hrs from route for below placeholder-->
-        <input type=text name="end-date" id="end-date" placeholder="12/31/2017">
+        <input type=date name="end-date" id="end-date" placeholder="12/31/2017">
         <!-- or other datetime dropdown or entry field for later times -->
         <br>
-        <br> 
+        <br>
         How did you feel about it? 
         <select name="after-rating">
             <option value="1">1</option>
@@ -38,12 +36,11 @@ zZ<!DOCTYPE html>
 
     </form>
     <script>
-    // v--Stub for event-listener for now button.
-    // function 
-    // $('#now').on('click', autoAddNow);
-
+   function chooseNow(evt) {
+        console.log('reached this function');
+        $('#end-time').val("{{ now_time }}");
+        $('#end-date').val("{{ now_date }}");
+    }
+    $('#now-after').on('click', chooseNow);
     </script>
-<body>
-
-</body>
-</html>
+{% endblock %}
