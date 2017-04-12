@@ -40,18 +40,31 @@
         </table>
     </div> -->
 
-{% for activity_id in used_activity_ids %}
-    <canvas id="{{ activity_id }}" width="200" height="100" class="chart-canvas"></canvas>
+{% for activity in used_activities %}
+    <div>
+        <center><h3>{{ activity.activity_type|title }}</h3></center>
+    <canvas id="{{ activity.activity_id }}" width="200" height="100" class="chart-canvas"></canvas>
+    </div>
 {% endfor %}
 
 <script>
 
-var options = {};
 var canvases = $('.chart-canvas');
 
 for (var canvas of canvases) {
     $.get("/chart/" + canvas.id + ".json", makeChart);
 }
+
+var options = {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    max: 10,
+                    beginAtZero: true
+                }
+            }]
+        }
+    };
 
 function makeChart(results) {
     var beforeRatings = results.before;
@@ -61,6 +74,7 @@ function makeChart(results) {
     var ctx = $('#' + activityId);
     var chart_1 = new Chart(ctx, {
         type: 'line',
+        options: options,
         data: {
                 labels: startTimes,
                 datasets: [

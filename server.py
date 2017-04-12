@@ -175,17 +175,17 @@ def show_main_page():
 
     completed_occurrences = user.get_completed_occurrences()
 
-    used_activity_ids = set([])
+    used_activities = set([])
     for occurrences in completed_occurrences:
-        used_activity_ids.add(occurrences.activity_id)
+        used_activities.add(occurrences.activity)
 
-    used_activity_ids = sorted(used_activity_ids)
+    used_activities = sorted(used_activities)
 
     return render_template("/main.html",
                            activities=activities,
                            planned_occurrences=planned_occurrences,
                            completed_occurrences=completed_occurrences,
-                           used_activity_ids=used_activity_ids)
+                           used_activities=used_activities)
 
 
 @app.route("/plan_activity", methods=["POST"])
@@ -201,6 +201,10 @@ def handle_activity_choice():
 def display_before_form(activity_id):
     """Display form for creating a new occurrence."""
 
+    # Get activity_type to display as a heading
+    activity = Activity.query.filter(Activity.activity_id == activity_id).one()
+    activity_type = activity.activity_type
+
     pacific = pytz.timezone('US/Pacific')
     now = datetime.now(tz=pacific)
     now_date = datetime.strftime(now, "%Y-%m-%d")
@@ -209,16 +213,13 @@ def display_before_form(activity_id):
     return render_template("/record_before.html",
                            activity_id=activity_id,
                            now_date=now_date,
-                           now_time=now_time)
+                           now_time=now_time,
+                           activity_type=activity_type)
 
 
 @app.route("/record_before/<activity_id>", methods=["POST"])
 def get_before_values(activity_id):
     """Process form, creating a new occurrence and saving it to the database."""
-
-    # Get activity_type to display as a heading
-    occurrence = Occurrence.query.filter(Occurrence.occurrence_id == occurrence_id).one()
-    activity_name = occurrence.activity.activity_type
 
     before_rating = request.form.get("before-rating")
     start_hour = request.form.get("planned-time")
@@ -229,8 +230,7 @@ def get_before_values(activity_id):
 
     new_occurrence = Occurrence(activity_id=activity_id,
                                 start_time=start_time,
-                                before_rating=before_rating,
-                                activity_name=activity_name)
+                                before_rating=before_rating)
 
     db.session.add(new_occurrence)
     db.session.commit()
@@ -289,7 +289,8 @@ def make_lines_chart_json(activity_id):
     completed_occurrences = db.session.query(Occurrence).join(Activity).filter(Activity.user_id == session['user_id'], Occurrence.end_time.isnot(None), Occurrence.after_rating.isnot(None), Occurrence.start_time.isnot(None), Occurrence.before_rating.isnot(None), Activity.activity_id == activity_id).order_by(Occurrence.start_time).all()
     before_ratings = [occurrence.before_rating for occurrence in completed_occurrences]
     after_ratings = [occurrence.after_rating for occurrence in completed_occurrences]
-    start_times = [occurrence.start_time for occurrence in completed_occurrences]
+    unformatted_start_times = [occurrence.start_time for occurrence in completed_occurrences]
+    start_times = [datetime.strftime(unformatted, "%a, %b %d, %-I:%M %p") for unformatted in unformatted_start_times]
     return jsonify({"before": before_ratings, "after": after_ratings, "starts": start_times, "activityId": activity_id})
 
 
