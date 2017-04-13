@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Main{% endblock %}
-{% block head %}<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.js"></script>{% endblock %}
+{% block head %}<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js"></script>{% endblock %}
 {% block content %}
     <h1>Plan an Activity</h1>
     <p>
@@ -41,9 +41,9 @@
     </div> -->
 
 {% for activity in used_activities %}
-    <div>
+    <div width="200" height="100">
         <center><h3>{{ activity.activity_type|title }}</h3></center>
-    <canvas id="{{ activity.activity_id }}" width="200" height="100" class="chart-canvas"></canvas>
+    <canvas id="{{ activity.activity_id }}" class="chart-canvas"></canvas>
     </div>
 {% endfor %}
 
@@ -56,13 +56,9 @@ for (var canvas of canvases) {
 }
 
 var options = {
+        responsive: true,
         scales: {
-            yAxes: [{
-                ticks: {
-                    max: 10,
-                    beginAtZero: true
-                }
-            }]
+            yAxes: [{ ticks: { max: 10, beginAtZero: true }}]
         }
     };
 
@@ -79,11 +75,12 @@ function makeChart(results) {
                 labels: startTimes,
                 datasets: [
                     {
+                        type: 'line',
                         label: "How You Felt Beforehand", 
                         data: beforeRatings,
-                        backgroundColor: "rgba(153,255,51,0.4)"
+                        backgroundColor: "rgba(153,255,51,0.4)",
                     },
-                    {
+                    {   type: 'line',
                         label: "How You Felt Afterward",
                         data: afterRatings,
                         backgroundColor: "rgba(255,153,0,0.4)"
