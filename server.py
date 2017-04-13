@@ -179,7 +179,8 @@ def show_main_page():
     for occurrences in completed_occurrences:
         used_activities.add(occurrences.activity)
 
-    used_activities = sorted(used_activities)
+    used_activities = list(used_activities)
+    used_activities.sort(key=lambda x: x.activity_type)
 
     return render_template("/main.html",
                            activities=activities,

@@ -41,9 +41,9 @@
     </div> -->
 
 {% for activity in used_activities %}
-    <div width="200" height="100">
+    <div>
         <center><h3>{{ activity.activity_type|title }}</h3></center>
-    <canvas id="{{ activity.activity_id }}" class="chart-canvas"></canvas>
+    <canvas id="{{ activity.activity_id }}" width="200" height="100" class="chart-canvas"></canvas>
     </div>
 {% endfor %}
 
@@ -57,6 +57,7 @@ for (var canvas of canvases) {
 
 var options = {
         responsive: true,
+        maintainAspectRatio: false,
         scales: {
             yAxes: [{ ticks: { max: 10, beginAtZero: true }}]
         }
