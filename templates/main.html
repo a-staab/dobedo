@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% block title %}Main{% endblock %}
-{% block head %}<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js"></script>{% endblock %}
+{% block head %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js"></script>
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+{% endblock %}
 {% block content %}
     <h1>Plan an Activity</h1>
     <p>
@@ -39,14 +42,15 @@
             {% endfor %}
         </table>
     </div> -->
-
+<div class=row>
+    <p style="font-size:3vh; margin: 20px;">Jibberish</p>
 {% for activity in used_activities %}
-    <div>
+    <div class="col-xs-12 col-sm-6 col-md-4" style="margin:20px 0;">
         <center><h3>{{ activity.activity_type|title }}</h3></center>
-    <canvas id="{{ activity.activity_id }}" width="200" height="100" class="chart-canvas"></canvas>
+    <canvas id="{{ activity.activity_id }}" class="chart-canvas" style="max-height:400px;"></canvas>
     </div>
 {% endfor %}
-
+</div>
 <script>
 
 var canvases = $('.chart-canvas');
@@ -58,8 +62,13 @@ for (var canvas of canvases) {
 var options = {
         responsive: true,
         maintainAspectRatio: false,
-        scales: {
-            yAxes: [{ ticks: { max: 10, beginAtZero: true }}]
+        legend: {
+            display: true,
+            labels: {
+                boxWidth: 20,
+            }
+        }, scales: {
+            yAxes: [{ ticks: { max: 10, min: 1 }}]
         }
     };
 
