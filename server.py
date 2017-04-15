@@ -300,7 +300,7 @@ def make_lines_chart_json(activity_id):
     before_ratings = [occurrence.before_rating for occurrence in completed_occurrences]
     after_ratings = [occurrence.after_rating for occurrence in completed_occurrences]
     unformatted_start_times = [occurrence.start_time for occurrence in completed_occurrences]
-    start_times = [datetime.strftime(unformatted, "%a, %b %d, %-I:%M %p") for unformatted in unformatted_start_times]
+    start_times = [datetime.strftime(unformatted, "%a, %b %d") for unformatted in unformatted_start_times]
     return jsonify({"before": before_ratings, "after": after_ratings, "starts": start_times, "activityId": activity_id})
 
 
