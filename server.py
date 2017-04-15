@@ -3,6 +3,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from model import db, User, Activity, Occurrence, connect_to_db
 from datetime import datetime
 import pytz
+import bcrypt
 
 app = Flask(__name__)
 app.secret_key = "7SOIF280FSH9G0-SSKJ"
@@ -52,6 +53,10 @@ def signup_user():
         return redirect("/signup")
 
     else:
+
+        # Generate salt and hash password to store hashed password in database
+        password = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt())
+
         if age:
             new_user = User(user_handle=username,
                             password=password,
@@ -136,14 +141,18 @@ def display_signin_form():
 def signin_user():
     """Handle sign-in."""
 
-    password = request.form.get("password")
+    provided_password = request.form.get("provided-password")
     email = request.form.get("email")
 
     # Check that a user with the provided email address is already in database
     if User.query.filter(User.email == email).all():
-        # If so, check that in the database, the password for the user with the
-        # provided email address matches the password provided
-        if User.query.filter(User.email == email).one().password == password:
+        # If so, check that the provided password produces the same hash as
+        # what's stored in the database for the user with the provided email
+        # address when the salt (stored in the hash) is applied to it
+        password = User.query.filter(User.email == email).one().password
+        provided_password = provided_password.encode('utf8')
+        provided_after_salt = bcrypt.hashpw(provided_password, str(password))
+        if password == provided_after_salt:
             # If so, get the user's user_id and store it on the session
             user_id = User.query.filter(User.email == email).one().user_id
             session["user_id"] = user_id

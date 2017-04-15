@@ -2,6 +2,7 @@
 
 from model import User, Activity, Occurrence, connect_to_db, db
 from server import app
+import bcrypt
 
 
 def load_users():
@@ -12,6 +13,8 @@ def load_users():
         email, password, user_handle, age = row.split("|")
         if age == '':
             age = None
+
+        password = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt())
 
         user = User(email=email,
                     password=password,

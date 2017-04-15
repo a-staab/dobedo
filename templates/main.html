@@ -43,12 +43,11 @@
         </table>
     </div> -->
 <div class=row>
-    <p style="font-size:3vh; margin: 20px;">Jibberish</p>
 {% for activity in used_activities %}
-    <div class="col-xs-12 col-sm-6 col-md-4" style="margin:20px 0;">
+  <div class="col-xs-12 col-sm-6 col-md-6" style="margin:20px 0;">
         <center><h3>{{ activity.activity_type|title }}</h3></center>
     <canvas id="{{ activity.activity_id }}" class="chart-canvas" style="max-height:400px;"></canvas>
-    </div>
+</div>
 {% endfor %}
 </div>
 <script>
@@ -62,10 +61,12 @@ for (var canvas of canvases) {
 var options = {
         responsive: true,
         maintainAspectRatio: false,
+
         legend: {
             display: true,
             labels: {
                 boxWidth: 20,
+                fontSize: 12
             }
         }, scales: {
             yAxes: [{ ticks: { max: 10, min: 1 }}]

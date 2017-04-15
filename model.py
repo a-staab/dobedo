@@ -10,7 +10,7 @@ class User(db.Model):
 
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.Unicode(50), nullable=False, unique=True)
-    password = db.Column(db.Unicode(25), nullable=False)
+    password = db.Column(db.Unicode(300), nullable=False)
     user_handle = db.Column(db.Unicode(50), nullable=False)
     age = db.Column(db.Integer, nullable=True)
 
