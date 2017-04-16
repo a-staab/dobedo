@@ -2,7 +2,7 @@
 {% block title %}Finish Your Entry{% endblock %}
 {% block head %}{% endblock %}
 {% block content %}
-<h4><i>{{ title|activity_name }}</i></h4>
+<h4><i>{{ activity_name|title }}</i></h4><a href="/signout"><button type="button" id="sign_out" name="sign_out">Sign Out</button></a>
     <p>When did you finish?
     </p>
     <form action="/record_after/{{ occurrence_id }}", method="POST">

@@ -5,7 +5,7 @@
 <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 {% endblock %}
 {% block content %}
-    <h1>Plan an Activity</h1>
+    <h1>Plan an Activity</h1><a href="/signout"><button type="button" id="sign_out" name="sign_out">Sign Out</button></a>
     <p>
     <!-- Dropdown is populated by results of query for user's activity types -->
     Pick an activity to begin tracking: 
@@ -65,7 +65,7 @@ var options = {
         legend: {
             display: true,
             labels: {
-                boxWidth: 20,
+                boxWidth: 30,
                 fontSize: 12
             }
         }, scales: {
@@ -87,7 +87,7 @@ function makeChart(results) {
                 datasets: [
                     {
                         type: 'line',
-                        label: "How You Felt Beforehand", 
+                        label: "How You Expected to Feel", 
                         data: beforeRatings,
                         backgroundColor: "rgba(153,255,51,0.4)",
                     },

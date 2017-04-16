@@ -2,7 +2,7 @@
 {% block title %}Begin Your Entry{% endblock %}
 {% block head %}{% endblock %}
 {% block content %}
-<h4><i>{{ title|activity_type }}</i></h4>
+<h4><i>{{ activity_name|title }}</i></h4><a href="/signout"><button type="button" id="sign_out" name="sign_out">Sign Out</button></a>
 <p>When do you plan to start?
         </p>
     <form action="/record_before/{{ activity_id }}", method="POST">
