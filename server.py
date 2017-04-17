@@ -57,6 +57,7 @@ def signup_user():
         # Generate salt and hash password to store hashed password in database
         password = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt())
 
+        # Providing an age is optional
         if age:
             new_user = User(user_handle=username,
                             password=password,
@@ -71,6 +72,9 @@ def signup_user():
         db.session.add(new_user)
         db.session.commit()
 
+        # Immediately sign in new user; otherwise, redirecting to /setup would
+        # fail the @app.before_request sign-in check, and user would be
+        # redirected to /signin instead
         user_id = User.query.filter(User.email == email).one().user_id
         session["user_id"] = user_id
 
@@ -87,7 +91,6 @@ def request_activity_types():
 @app.route("/setup", methods=["POST"])
 def create_activity_types():
     """Process setup form, adding user-defined activity types to database."""
-    print request.form
 
     activity_1 = request.form.get("activity_1")
     activity_2 = request.form.get("activity_2")
@@ -106,6 +109,8 @@ def create_activity_types():
     new_activities = []
 
     for activity in activities:
+        # User can enter as few as one; if None, it will not be added to the
+        # database
         if activity:
             new_activities.append(activity)
 
@@ -176,19 +181,26 @@ def show_main_page():
     """Load main page."""
 
     # Get activities for dropdown menu for choosing one to plan
-    activities = Activity.query.filter(Activity.user_id == session['user_id']).all()
+    activities = Activity.query.filter(Activity.user_id == session['user_id']
+                                       ).all()
 
-    # Get list of user's occurrences without end times & before ratings
+    # Get user's occurrences without end times & before ratings to display as
+    # links so user can click to complete them
     user = User.query.filter(User.user_id == session['user_id']).one()
     planned_occurrences = user.get_planned_occurrences()
 
+    # Get list of user's completed occurrences for rendering charts
     completed_occurrences = user.get_completed_occurrences()
 
+    # Charts should only be rendered for activities with at least one completed
+    # occurrence
     used_activities = set([])
     for occurrences in completed_occurrences:
         used_activities.add(occurrences.activity)
 
     used_activities = list(used_activities)
+
+    # Charts should be displayed in a consistent order; this alphabetizes them
     used_activities.sort(key=lambda x: x.activity_type)
 
     return render_template("/main.html",
@@ -215,6 +227,8 @@ def display_before_form(activity_id):
     activity = Activity.query.filter(Activity.activity_id == activity_id).one()
     activity_type = activity.activity_type
 
+    # Get current date and time so that user can quickly select these using now
+    # button if desired
     pacific = pytz.timezone('US/Pacific')
     now = datetime.now(tz=pacific)
     now_date = datetime.strftime(now, "%Y-%m-%d")
@@ -254,9 +268,13 @@ def display_after_form(occurrence_id):
     """Display form for completing record of a previously created occurrence."""
 
     # Get activity_type to display as a heading
-    occurrence = Occurrence.query.filter(Occurrence.occurrence_id == occurrence_id).one()
+    occurrence = Occurrence.query.filter(
+        Occurrence.occurrence_id == occurrence_id
+        ).one()
     activity_name = occurrence.activity.activity_type
 
+    # Get current date and time so that user can quickly select these using now
+    # button if desired
     pacific = pytz.timezone('US/Pacific')
     now = datetime.now(tz=pacific)
     now_date = datetime.strftime(now, "%Y-%m-%d")
@@ -280,7 +298,9 @@ def get_after_values(occurrence_id):
     unformatted_time = end_date + " " + end_hour
     end_time = datetime.strptime(unformatted_time, "%Y-%m-%d %I:%M %p")
 
-    completed_occurrence = Occurrence.query.filter(Occurrence.occurrence_id == occurrence_id).one()
+    completed_occurrence = Occurrence.query.filter(
+        Occurrence.occurrence_id == occurrence_id
+        ).one()
 
     completed_occurrence.end_time = end_time
     completed_occurrence.after_rating = after_rating
@@ -296,31 +316,35 @@ def make_lines_chart_json(activity_id):
     """Return json with the data needed to render charts for all activities with
     completed occurrences."""
 
-    completed_occurrences = db.session.query(Occurrence).join(Activity).filter(Activity.user_id == session['user_id'], Occurrence.end_time.isnot(None), Occurrence.after_rating.isnot(None), Occurrence.start_time.isnot(None), Occurrence.before_rating.isnot(None), Activity.activity_id == activity_id).order_by(Occurrence.start_time).all()
-    before_ratings = [occurrence.before_rating for occurrence in completed_occurrences]
-    after_ratings = [occurrence.after_rating for occurrence in completed_occurrences]
-    unformatted_start_times = [occurrence.start_time for occurrence in completed_occurrences]
-    start_times = [datetime.strftime(unformatted, "%a, %b %d") for unformatted in unformatted_start_times]
-    return jsonify({"before": before_ratings, "after": after_ratings, "starts": start_times, "activityId": activity_id})
+    completed_occurrences = db.session.query(Occurrence).join(Activity).filter(
+        Activity.user_id == session['user_id'],
+        Occurrence.end_time.isnot(None),
+        Occurrence.after_rating.isnot(None),
+        Occurrence.start_time.isnot(None),
+        Occurrence.before_rating.isnot(None),
+        Activity.activity_id == activity_id).order_by(
+        Occurrence.start_time).all()
+
+    before_ratings = [occurrence.before_rating
+                      for occurrence in completed_occurrences]
+    after_ratings = [occurrence.after_rating
+                     for occurrence in completed_occurrences]
+    unformatted_start_times = [occurrence.start_time
+                               for occurrence in completed_occurrences]
+    start_times = [datetime.strftime(unformatted, "%a, %b %d")
+                   for unformatted in unformatted_start_times]
+    return jsonify({"before": before_ratings,
+                    "after": after_ratings,
+                    "starts": start_times,
+                    "activityId": activity_id})
 
 
 @app.route("/signout", methods=["GET"])
 def signout_user():
-    """Signs user out and redirects to landing page."""
+    """Sign user out and redirect to landing page."""
 
     del session['user_id']
     return redirect("/")
-
-
-# For additional routes, a stub:
-
-# @app.route("/main")
-# def ______():
-#     """ DOCSTRING"""
-
-#   CODE
-
-#    return CODE
 
 connect_to_db(app)
 

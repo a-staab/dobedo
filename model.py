@@ -82,6 +82,8 @@ class Occurrence(db.Model):
 def connect_to_db(app, db_uri='postgresql:///tracker'):
     """Connect to the database."""
 
+    # Making the database a default value for the db_uri parameter allows us to
+    # pass in a different database for testing
     app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     app.config['SQLALCHEMY_ECHO'] = True
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -91,16 +93,12 @@ def connect_to_db(app, db_uri='postgresql:///tracker'):
 
 # Helper functions
 def create_new_user(email, password, user_handle, age=None):
+    """Create a new user."""
 
     return User(email=email,
                 password=password,
                 user_handle=user_handle,
                 age=age)
-
-    # v--Should this be included? Removed so I could use function inside
-    #    example_data() below
-    # db.session.add(new_user)
-    # db.session.commit()
 
 
 def example_data():

@@ -22,6 +22,7 @@ class Test(unittest.TestCase):
     def tearDown(self):
         """Do this after every test."""
 
+        # End session and delete tables
         db.session.close()
         db.drop_all()
 
@@ -57,6 +58,7 @@ class Test_Signed_In(unittest.TestCase):
         app.config['TESTING'] = True
         app.config['SECRET_KEY'] = 'key'
 
+        # Store a value for user_id in the session to mimic signed-in user
         with self.client as c:
             with c.session_transaction() as sess:
                 sess['user_id'] = 1
@@ -71,6 +73,7 @@ class Test_Signed_In(unittest.TestCase):
     def tearDown(self):
         """Do this after every test."""
 
+        # End session and delete tables
         db.session.close()
         db.drop_all()
 
