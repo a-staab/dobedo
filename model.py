@@ -12,6 +12,7 @@ class User(db.Model):
     email = db.Column(db.Unicode(50), nullable=False, unique=True)
     password = db.Column(db.Unicode(300), nullable=False)
     user_handle = db.Column(db.Unicode(50), nullable=False)
+    phone_number = db.Column(db.Unicode(20), nullable=True, unique=True)
     age = db.Column(db.Integer, nullable=True)
 
     def __repr__(self):
