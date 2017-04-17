@@ -4,6 +4,7 @@ from model import db, connect_to_db, example_data
 
 
 class Test(unittest.TestCase):
+    """Tests for public pages."""
 
     def setUp(self):
         """Do this before each test."""
@@ -46,24 +47,32 @@ class Test(unittest.TestCase):
     #     self.assertIn('with user_id', result.data)
 
 
-class Test_Signed_In(Test):
+class Test_Signed_In(unittest.TestCase):
+    """Tests for pages requiring sign in."""
 
     def setUp(self):
         """Do this before each test."""
 
-        super(Test_Signed_In, self).setUp()
-
-        app.config['SECRET_KEY'] = 'key'
         self.client = app.test_client()
+        app.config['TESTING'] = True
+        app.config['SECRET_KEY'] = 'key'
 
         with self.client as c:
             with c.session_transaction() as sess:
                 sess['user_id'] = 1
 
+        # Connect to test database
+        connect_to_db(app, "postgresql:///test_database")
+
+        # Create tables and add sample data
+        db.create_all()
+        example_data()
+
     def tearDown(self):
         """Do this after every test."""
 
-        super(Test_Signed_In, self).tearDown()
+        db.session.close()
+        db.drop_all()
 
     def test_request_activity_types(self):
         """Tests activity setup page loads."""
@@ -73,22 +82,23 @@ class Test_Signed_In(Test):
         self.assertIn('usually ideal', result.data)
 
     def test_create_activity_types(self):
-        """Tests user can specify an activity type for tracking from setup page.
-        """
+        """Tests user can specify an activity type for tracking using every
+        available field on the setup page."""
 
         result = self.client.post("/setup",
                                   data={"activity_1": "coding",
-                                        "activity_2": "",
-                                        "activity_3": "",
-                                        "activity_4": "",
-                                        "activity_5": "",
-                                        "activity_6": "",
-                                        "activity_7": "",
-                                        "activity_8": "",
-                                        "activity_9": "",
-                                        "activity_10": ""},
+                                        "activity_2": "sports",
+                                        "activity_3": "shopping",
+                                        "activity_4": "friends",
+                                        "activity_5": "studying",
+                                        "activity_6": "meditation",
+                                        "activity_7": "family",
+                                        "activity_8": "napping",
+                                        "activity_9": "piano",
+                                        "activity_10": "writing"},
                                   follow_redirects=True)
         # Change 'Results' below once final copy and data viz are complete
+        self.assertEqual(result.status_code, 200)
         self.assertIn('Results', result.data)
 
     def test_main_page_render(self):
