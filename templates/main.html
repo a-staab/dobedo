@@ -4,9 +4,7 @@
 <script src=
     "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js">
 </script>
-<link rel="stylesheet" 
-    type="text/css" 
-    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="http://code.jquery.com/jquery-3.2.1.js"></script>
 {% endblock %}
 {% block content %}
 <h1>Plan an Activity</h1>
@@ -57,7 +55,7 @@
             {% endfor %}
         </table>
     </div> -->
-<div class=row>
+<div class="row">
     <!-- Makes a canvas for a chart for every activity that has completed 
     occurrences -->
     {% for activity in used_activities %}
@@ -78,7 +76,7 @@
 var canvases = $('.chart-canvas');
 
 // Make AJAX request to server for the data for each chart to be rendered and 
-// call makeChart function. Server route is "/chart/<activity_id>.json"
+// call makeChart function for each. Server route is "/chart/<activity_id>.json"
 for (var canvas of canvases) {
     $.get("/chart/" + canvas.id + ".json", makeChart);
 }
