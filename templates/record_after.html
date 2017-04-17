@@ -2,46 +2,42 @@
 {% block title %}Finish Your Entry{% endblock %}
 {% block head %}{% endblock %}
 {% block content %}
-<h4><i>{{ activity_name|title }}</i></h4><a href="/signout"><button type="button" id="sign_out" name="sign_out">Sign Out</button></a>
-    <p>When did you finish?
-    </p>
-    <form action="/record_after/{{ occurrence_id }}", method="POST">
-        <button type="button" id="now-after" name="choose-now">Now</button> or
-        <input type=text name="end-time" id="end-time" placeholder="e.g, 12:00 pm"> 
-        <!--TODO Nice to have: pass datetime.now + 24 hrs from route for below placeholder-->
-        <input type=date name="end-date" id="end-date" placeholder="12/31/2017">
-        <!-- or other datetime dropdown or entry field for later times -->
-        <br>
-        <br>
-        How did you feel about it? 
-        <select name="after-rating">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
-        </select>
-        <br>
-        <br>
-        <input type="submit" value="Save">
-
-            <!-- Alternative, more complicated user flow: -->
-        <!--if user selected now, ask: How do you feel? and show dropdown menu with 1 - 10 -->
-        <!--if user entered a time in the dropdown, ask: 
-        How did you feel when you were done? and show dropdown menu with 1 - 10 -->
-
-    </form>
-    <script>
-   function chooseNow(evt) {
-        console.log('reached this function');
+<h4><i>{{ activity_name|title }}</i></h4>
+<a href="/signout">
+    <button type="button" id="sign_out" name="sign_out">Sign Out</button>
+</a>
+<p>When did you finish?
+</p>
+<form action="/record_after/{{ occurrence_id }}", method="POST">
+    <button type="button" id="now-after" name="choose-now">Now</button> or
+    <input type=text name="end-time" id="end-time" placeholder="e.g, 12:00 pm"> 
+    <input type=date name="end-date" id="end-date" placeholder="12/31/2017">
+    <br>
+    <br>
+    How did you feel about it? 
+    <select name="after-rating">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+    </select>
+    <br>
+    <br>
+    <input type="submit" value="Save">
+</form>
+<script>
+    // Clicking the "Now" button will autofill the date and time fields with the
+    // current time.
+    function chooseNow(evt) {
         $('#end-time').val("{{ now_time }}");
         $('#end-date').val("{{ now_date }}");
     }
     $('#now-after').on('click', chooseNow);
-    </script>
+</script>
 {% endblock %}

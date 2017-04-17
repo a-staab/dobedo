@@ -1,31 +1,45 @@
 {% extends "base.html" %}
 {% block title %}Main{% endblock %}
 {% block head %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js"></script>
-<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src=
+    "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js">
+</script>
+<link rel="stylesheet" 
+    type="text/css" 
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 {% endblock %}
 {% block content %}
-    <h1>Plan an Activity</h1><a href="/signout"><button type="button" id="sign_out" name="sign_out">Sign Out</button></a>
-    <p>
+<h1>Plan an Activity</h1>
+<a href="/signout">
+    <button type="button" id="sign_out" name="sign_out">Sign Out</button>
+</a>
+<p>
     <!-- Dropdown is populated by results of query for user's activity types -->
     Pick an activity to begin tracking: 
     <form action="/plan_activity" method="POST">
         <select name="activity-choice">
             {% for activity in activities %}
-            <option value="{{ activity.activity_id }}">{{ activity.activity_type }}</option>
+                <option value="{{ activity.activity_id }}">
+                    {{ activity.activity_type }}
+                </option>
             {% endfor %}
-        </select> <input type="submit" value="Begin">
+        </select>
+        <input type="submit" value="Begin">
     </form>
-    </p>
-    <h2>Planned Activities</h2>
-    <ul>
-        {% for occurrence in planned_occurrences %}
-        <li><a href="/record_after/{{ occurrence.occurrence_id }}">{{ occurrence.start_time.strftime("%m/%d/%Y %l:%M %p") }}</a></li>
-        {% endfor %}
-    </ul>
-    <h2>Results</h2>
-
-<!--This is an artifact from my MVP - meant as a placeholder, standing in for data viz.
+</p>
+<h2>Planned Activities</h2>
+<ul>
+    {% for occurrence in planned_occurrences %}
+        <li>
+            <a href="/record_after/{{ occurrence.occurrence_id }}">
+                {{ occurrence.start_time.strftime("%m/%d/%Y %l:%M %p") }}
+            </a>
+        </li>
+    {% endfor %}
+</ul>
+<h2>Results</h2>
+<!--This is an artifact from my MVP - meant as a placeholder, standing in 
+    for data viz.
     <div>
         <table border="1px">
             <th>Start Time</th>
@@ -33,27 +47,38 @@
             <th>After</th>
             <th>Activity</th>
             {% for occurrence in completed_occurrences %}
-            <tr>
-                <td>{{ occurrence.start_time.strftime("%m/%d/%Y %l:%M %p") }}</td>
-                <td>{{ occurrence.before_rating }}</td>
-                <td>{{ occurrence.after_rating }}</td>
-                <td>{{ occurrence.activity.activity_type }}</td>
-            </tr>
+                <tr>
+                    <td>{{ occurrence.start_time.strftime("%m/%d/%Y %l:%M %p") }}
+                    </td>
+                    <td>{{ occurrence.before_rating }}</td>
+                    <td>{{ occurrence.after_rating }}</td>
+                    <td>{{ occurrence.activity.activity_type }}</td>
+                </tr>
             {% endfor %}
         </table>
     </div> -->
 <div class=row>
-{% for activity in used_activities %}
-  <div class="col-xs-12 col-sm-6 col-md-6" style="margin:20px 0;">
-        <center><h3>{{ activity.activity_type|title }}</h3></center>
-    <canvas id="{{ activity.activity_id }}" class="chart-canvas" style="max-height:400px;"></canvas>
-</div>
-{% endfor %}
+    <!-- Makes a canvas for a chart for every activity that has completed 
+    occurrences -->
+    {% for activity in used_activities %}
+        <div class="col-xs-12 col-sm-6 col-md-6" style="margin:20px 0;">
+            <center><h3>{{ activity.activity_type|title }}</h3></center>
+            <!-- Setting activity_id as the id facilitates AJAX request 
+            below. -->
+            <canvas id="{{ activity.activity_id }}"
+                    class="chart-canvas" 
+                    style="max-height:400px;">
+            </canvas>
+        </div>
+    {% endfor %}
 </div>
 <script>
 
+// Get all canvases by their class
 var canvases = $('.chart-canvas');
 
+// Make AJAX request to server for the data for each chart to be rendered and 
+// call makeChart function. Server route is "/chart/<activity_id>.json"
 for (var canvas of canvases) {
     $.get("/chart/" + canvas.id + ".json", makeChart);
 }
@@ -61,7 +86,6 @@ for (var canvas of canvases) {
 var options = {
         responsive: true,
         maintainAspectRatio: false,
-
         legend: {
             display: true,
             labels: {
@@ -101,5 +125,4 @@ function makeChart(results) {
         });
 };
 </script>
-
 {% endblock %}

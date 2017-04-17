@@ -10,17 +10,17 @@
         <h4>APP NAME</h4>
     </nav>
     {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <!-- Possible TODO: implement fade-out for alerts using bootstrap -->
-            <div>
-                <ul class=flashes>
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-                </ul>
-            </div>
-        {% endif %}
+    {% if messages %}
+    <!-- Possible TODO: implement fade-out for alerts using bootstrap -->
+    <div>
+        <ul class=flashes>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
     {% endwith %}
-{% block content %}{% endblock %}
+    {% block content %}{% endblock %}
 </body>
 </html>
