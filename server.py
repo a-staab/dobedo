@@ -16,6 +16,8 @@ def check_signed_in():
 
     public_routes = ["/", "/signup", "/signin"]
 
+    print request.path
+
     if request.path not in public_routes and not session.get("user_id"):
         flash("You need to be logged in to view this page. Please log in.")
         return redirect("/signin")
@@ -168,12 +170,13 @@ def signin_user():
         else:
             flash("Sorry, we didn't find an account with the email and password\
             you provided. Please try again.")
-            return redirect("/signin")
+
+            return render_template("signin.html")
 
     else:
         flash("Sorry, we didn't find an account with the email and password you\
                provided. Please try again.")
-        return redirect("/signin")
+        return render_template("signin.html")
 
 
 @app.route("/main", methods=["GET"])
