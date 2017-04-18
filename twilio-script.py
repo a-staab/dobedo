@@ -4,14 +4,6 @@ from flask import Flask
 from datetime import datetime, timedelta
 import os
 
-# schedule to run using crontab
-
-# for multiple commands, use && operator
-
-# env > env/bin/python twilio-script.py
-
-# Tell crontab to use bash, not sh:
-# SHELL=/bin/bash
 
 app = Flask(__name__)
 
@@ -20,7 +12,6 @@ db.app = app
 db.init_app(app)
 db.create_all()
 
-print "yes this ran"
 # Query for phone numbers of people with incompleted occurrences
 numbers_to_dial = set()
 incomplete_occurrences = Occurrence.query.filter((Occurrence.end_time.is_(None) | Occurrence.after_rating.is_(None))).all()
