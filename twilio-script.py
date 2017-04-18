@@ -1,6 +1,6 @@
 from model import db, Occurrence
 from twilio.rest import Client
-
+from flask import Flask
 # schedule to run using crontab
 
 # for multiple commands, use && operator
@@ -11,6 +11,13 @@ from twilio.rest import Client
     # SHELL=/bin/bash
 
 # query for phone numbers of people with unfinished occurrences
+
+app = Flask(__name__)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql:///tracker"
+db.app = app
+db.init_app(app)
+db.create_all()
 
 numbers_to_dial = set()
 incomplete_occurrences = Occurrence.query.filter((Occurrence.end_time.is_(None) | Occurrence.after_rating.is_(None))).all()
