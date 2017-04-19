@@ -345,7 +345,7 @@ def make_lines_chart_json(activity_id):
 def display_update_page():
     """Display page where user can update registration data."""
 
-    # TODO: Code
+    return render_template("profile.html")
 
 
 @app.route("/signout", methods=["GET"])
