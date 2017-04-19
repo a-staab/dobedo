@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from flask import session
 
 db = SQLAlchemy()
 
@@ -100,6 +101,15 @@ def create_new_user(email, password, user_handle, age=None):
                 password=password,
                 user_handle=user_handle,
                 age=age)
+
+
+def sign_in_user(email):
+    """Sign in user."""
+
+    user_id = User.query.filter(User.email == email).one().user_id
+    session["user_id"] = user_id
+    user_handle = User.query.filter(User.email == email).one().user_handle
+    session['user_handle'] = user_handle
 
 
 def example_data():

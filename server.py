@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, redirect, flash, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
-from model import db, User, Activity, Occurrence, connect_to_db
+from model import db, User, Activity, Occurrence, connect_to_db, sign_in_user
 from datetime import datetime
 import pytz
 import bcrypt
@@ -77,8 +77,7 @@ def signup_user():
         # Immediately sign in new user; otherwise, redirecting to /setup would
         # fail the @app.before_request sign-in check, and user would be
         # redirected to /signin instead
-        user_id = User.query.filter(User.email == email).one().user_id
-        session["user_id"] = user_id
+        sign_in_user(email)
 
     return redirect("/setup")
 
@@ -160,9 +159,9 @@ def signin_user():
         provided_password = provided_password.encode('utf8')
         provided_after_salt = bcrypt.hashpw(provided_password, str(password))
         if password == provided_after_salt:
-            # If so, get the user's user_id and store it on the session
-            user_id = User.query.filter(User.email == email).one().user_id
-            session["user_id"] = user_id
+            # If so, get the user's user_id and user_handle and store them on
+            # the session
+            sign_in_user(email)
 
             flash("Thanks for logging in!")
             return redirect("/main")
@@ -342,11 +341,19 @@ def make_lines_chart_json(activity_id):
                     "activityId": activity_id})
 
 
+@app.route("/profile", methods=["GET"])
+def display_update_page():
+    """Display page where user can update registration data."""
+
+    # TODO: Code
+
+
 @app.route("/signout", methods=["GET"])
 def signout_user():
     """Sign user out and redirect to landing page."""
 
     del session['user_id']
+    del session['user_handle']
     return redirect("/")
 
 connect_to_db(app)

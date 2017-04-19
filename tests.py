@@ -100,9 +100,8 @@ class Test_Signed_In(unittest.TestCase):
                                         "activity_9": "piano",
                                         "activity_10": "writing"},
                                   follow_redirects=True)
-        # Change 'Results' below once final copy and data viz are complete
         self.assertEqual(result.status_code, 200)
-        self.assertIn('Results', result.data)
+        self.assertIn('Plan an Activity', result.data)
 
     def test_main_page_render(self):
         """Tests that main page loads."""
