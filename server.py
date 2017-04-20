@@ -44,6 +44,7 @@ def signup_user():
     username = request.form.get("username")
     password = request.form.get("password")
     email = request.form.get("email")
+    phone_number = request.form.get("phone_number")
     age = request.form.get("age")
 
     # Check database for pre-existing account by checking for a user with the
@@ -59,13 +60,23 @@ def signup_user():
         # Generate salt and hash password to store hashed password in database
         password = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt())
 
-        # Providing an age is optional
-        if age:
+        # Age and phone number are optional
+        if age and phone_number:
+            new_user = User(user_handle=username,
+                            password=password,
+                            email=email,
+                            phone_number=phone_number,
+                            age=age)
+        elif age:
             new_user = User(user_handle=username,
                             password=password,
                             email=email,
                             age=age)
-
+        elif phone_number:
+            new_user = User(user_handle=username,
+                            password=password,
+                            phone_number=phone_number,
+                            age=age)
         else:
             new_user = User(user_handle=username,
                             password=password,
@@ -346,6 +357,52 @@ def display_update_page():
     """Display page where user can update registration data."""
 
     return render_template("profile.html")
+
+@app.route("/profile", methods=["POST"])
+def process_profile_update():
+    """Process form for changing user data."""
+
+        """Process signup form, adding user to database."""
+
+    # username = request.form.get("username")
+    # password = request.form.get("password")
+    # email = request.form.get("email")
+    # age = request.form.get("age")
+
+    # # Check database for pre-existing account by checking for a user with the
+    # # provided email address
+    # if User.query.filter(User.email == email).all():
+    #     flash("Looks like you've already registered. If you mistyped, please tr\
+    #            y again.")
+
+    #     return redirect("/signup")
+
+    # else:
+
+    #     # Generate salt and hash password to store hashed password in database
+    #     password = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt())
+
+    #     # Providing an age is optional
+    #     if age:
+    #         new_user = User(user_handle=username,
+    #                         password=password,
+    #                         email=email,
+    #                         age=age)
+
+    #     else:
+    #         new_user = User(user_handle=username,
+    #                         password=password,
+    #                         email=email)
+
+    #     db.session.add(new_user)
+    #     db.session.commit()
+
+    #     # Immediately sign in new user; otherwise, redirecting to /setup would
+    #     # fail the @app.before_request sign-in check, and user would be
+    #     # redirected to /signin instead
+    #     sign_in_user(email)
+
+
 
 
 @app.route("/signout", methods=["GET"])
