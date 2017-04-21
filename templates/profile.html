@@ -1,5 +1,33 @@
-  <input type="text" name="username" placeholder="Username" required><br>
-        <input type="password" name="password" placeholder="Password" required><br>
-        <input type="text" name="email" placeholder="Email" required><br>
-        <input type="text" name="phone-number" placeholder="555-555-5555"><br>
-        <input type="text" name="age" placeholder="Age (optional)"><br>
+<html>
+<head><title>Update your profile</title></head>
+    <body ng-app="formApp" >
+        <form ng-controller="FormController">
+            <input type="text" ng-model="username" placeholder="Username" required><br>
+            <input type="password" ng-model="password" placeholder="Password" required><br>
+            <input type="text" ng-model="email" placeholder="Email" required><br>
+            <input type="text" ng-model="phoneNumber" placeholder="555-555-5555"><br>
+            <input type="text" ng-model="age" placeholder="Age (optional)"><br>
+            <input type="button" ng-click="reset()" value="Reset" />
+            <input type="submit" ng-click="update(profile)" value="Save" />
+        </form>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script >
+var app = angular.module('formApp', []);
+
+    app.controller('FormController', function($scope, $http) {
+        $scope.username = "temporary"
+         $http.get('/json/user').then(function (results) {
+            console.log(results)
+            $scope.email = results.data.email
+            $scope.password = results.data.password
+            $scope.username = results.data.username
+            $scope.phoneNumber = results.data.phoneNumber
+            $scope.age = results.data.age
+         });
+        // $scope.sendToServer = function(argument) {
+        //     $http.post('/profile')
+        // };
+    });
+</script>
+</body>
+</html>

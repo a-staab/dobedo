@@ -44,7 +44,7 @@ def signup_user():
     username = request.form.get("username")
     password = request.form.get("password")
     email = request.form.get("email")
-    phone_number = request.form.get("phone_number")
+    phone_number = request.form.get("phone-number")
     age = request.form.get("age")
 
     # Check database for pre-existing account by checking for a user with the
@@ -75,8 +75,8 @@ def signup_user():
         elif phone_number:
             new_user = User(user_handle=username,
                             password=password,
-                            phone_number=phone_number,
-                            age=age)
+                            email=email,
+                            phone_number=phone_number)
         else:
             new_user = User(user_handle=username,
                             password=password,
@@ -358,11 +358,26 @@ def display_update_page():
 
     return render_template("profile.html")
 
-@app.route("/profile", methods=["POST"])
-def process_profile_update():
-    """Process form for changing user data."""
 
-        """Process signup form, adding user to database."""
+@app.route("/json/user", methods=["GET"])
+def get_profile_data():
+    """Return json for updating user profile information."""
+
+    user = User.query.get(session['user_id'])
+    results = {}
+    results['email'] = user.email
+    results['password'] = user.password
+    results['username'] = user.user_handle
+    results['phoneNumber'] = user.phone_number
+    results['age'] = user.age
+
+    return jsonify(results)
+
+
+
+# @app.route("/profile", methods=["POST"])
+# def process_profile_update():
+#     """Process form for changing user data."""
 
     # username = request.form.get("username")
     # password = request.form.get("password")
@@ -401,8 +416,6 @@ def process_profile_update():
     #     # fail the @app.before_request sign-in check, and user would be
     #     # redirected to /signin instead
     #     sign_in_user(email)
-
-
 
 
 @app.route("/signout", methods=["GET"])
