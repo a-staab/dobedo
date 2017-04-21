@@ -121,12 +121,10 @@ def example_data():
     ashley = User(email='hb-student@hackbright.com', password='python',
                   user_handle='artist')
 
-    # Question: since create_new_user includes session commit, will running the
-    # two following lines of code create soo and hannah twice?
-
     # Tests using create_new_user helper function
     soo = create_new_user('coding-student@hackbright.com', 'python', 'boss')
     hannah = create_new_user('hacks@hackbright.com', 'python', 'linguist')
+    katrina = create_new_user('testing_rocks@hackbright.com', 'python', 'friend')
 
     # Test supplying an age, which is optional
     mel = User(email='mel@ubermelon.com',
@@ -148,7 +146,7 @@ def example_data():
     # t_occurence_1 = (set values for end_time, after_rating, and notes)
 
     # ^--Once complete, add test occurrences to list--v
-    db.session.add_all([ashley, soo, hannah, mel])
+    db.session.add_all([ashley, soo, hannah, katrina, mel])
     db.session.commit()
 
 if __name__ == "__main__":
