@@ -3,6 +3,7 @@ from twilio.rest import Client
 from flask import Flask
 from datetime import datetime, timedelta
 import os
+import pytz
 
 
 app = Flask(__name__)
@@ -14,6 +15,7 @@ db.create_all()
 
 # Query for phone numbers of people with incompleted occurrences
 numbers_to_dial = set()
+pacific = pytz.timezone('US/Pacific')
 incomplete_occurrences = Occurrence.query.filter((Occurrence.end_time.is_(None) | Occurrence.after_rating.is_(None))).all()
 
 # Create a list with the phone number for each user who has an incomplete
@@ -22,7 +24,7 @@ incomplete_occurrences = Occurrence.query.filter((Occurrence.end_time.is_(None) 
 # completed the activity and have had enough time to remember to document it at
 # this point (while not having, yet, forgotten how they felt about it).
 for occurrence in incomplete_occurrences:
-    if occurrence.activity.user.phone_number and occurrence.start_time < (datetime.now() - timedelta(hours=24)):
+    if occurrence.activity.user.phone_number and occurrence.start_time.replace(tzinfo=pacific) < (datetime.now(tz=pacific) - timedelta(hours=24)):
         numbers_to_dial.add(occurrence.activity.user.phone_number)
 
 account_sid = os.environ["ACCOUNT_SID"]
