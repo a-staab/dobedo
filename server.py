@@ -16,8 +16,6 @@ def check_signed_in():
 
     public_routes = ["/", "/signup", "/signin"]
 
-    print request.path
-
     if request.path not in public_routes and not session.get("user_id"):
         flash("You need to be logged in to view this page. Please log in.")
         return redirect("/signin")
@@ -366,7 +364,6 @@ def get_profile_data():
     user = User.query.get(session['user_id'])
     results = {}
     results['email'] = user.email
-    results['password'] = user.password
     results['username'] = user.user_handle
     results['phoneNumber'] = user.phone_number
     results['age'] = user.age
@@ -374,48 +371,28 @@ def get_profile_data():
     return jsonify(results)
 
 
+@app.route("/profile", methods=["POST"])
+def process_profile_update():
+    """Process form for changing user data."""
 
-# @app.route("/profile", methods=["POST"])
-# def process_profile_update():
-#     """Process form for changing user data."""
+    username = request.form.get("username")
+    email = request.form.get("email")
+    phone_number = request.form.get("phoneNumber")
+    age = request.form.get("age")
 
-    # username = request.form.get("username")
-    # password = request.form.get("password")
-    # email = request.form.get("email")
-    # age = request.form.get("age")
+    user = User.query.get(session['user_id'])
+    user.user_handle = username
+    user.email = email
+    user.phone_number = phone_number
+    user.age = age
 
-    # # Check database for pre-existing account by checking for a user with the
-    # # provided email address
-    # if User.query.filter(User.email == email).all():
-    #     flash("Looks like you've already registered. If you mistyped, please tr\
-    #            y again.")
+    db.session.commit()
 
-    #     return redirect("/signup")
+    # Update relevant session data immediately
+    session['user_handle'] = user.user_handle
 
-    # else:
-
-    #     # Generate salt and hash password to store hashed password in database
-    #     password = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt())
-
-    #     # Providing an age is optional
-    #     if age:
-    #         new_user = User(user_handle=username,
-    #                         password=password,
-    #                         email=email,
-    #                         age=age)
-
-    #     else:
-    #         new_user = User(user_handle=username,
-    #                         password=password,
-    #                         email=email)
-
-    #     db.session.add(new_user)
-    #     db.session.commit()
-
-    #     # Immediately sign in new user; otherwise, redirecting to /setup would
-    #     # fail the @app.before_request sign-in check, and user would be
-    #     # redirected to /signin instead
-    #     sign_in_user(email)
+    flash("Changes saved.")
+    return redirect("/main")
 
 
 @app.route("/signout", methods=["GET"])
