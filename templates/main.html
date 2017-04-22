@@ -31,7 +31,7 @@
             {% for occurrence in planned_occurrences %}
                 <li class="list-group-item">
                     <a href="/record_after/{{ occurrence.occurrence_id }}">
-                        {{ occurrence.start_time.strftime("%m/%d/%Y %l:%M %p") }}
+                        {{occurrence.start_time.strftime("%A, %b %d at %l:%M %p") }}: {{ occurrence.activity.activity_type|title }}
                     </a>
                 </li>
             {% endfor %}
