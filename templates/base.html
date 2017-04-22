@@ -17,11 +17,11 @@
   <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <a class="navbar-brand" href="#">Navbar</a>
+  <a class="navbar-brand" href="#">DoBeDo</a>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
+<!--       <li class="nav-item active">
         <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
@@ -29,23 +29,25 @@
       </li>
       <li class="nav-item">
         <a class="nav-link disabled" href="#">Disabled</a>
-      </li>
+      </li> -->
     </ul>
-<div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-    {{ session['user_handle'] }}
-    <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-    <li><a href="/profile"><center>Update Profile</center></a></li>
-  </ul>
-</div>
+{% if session['user_id'] %}
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        {{ session['user_handle'] }}
+        <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+          <li><a href="/profile"><center>Update Profile</center></a></li>
+        </ul>
+    </div>
     <span class="signout">
       <a href="/signout">
-    <button type="button" id="sign_out" name="sign_out" class="btn btn-secondary btn-md">Sign Out</button>
-</a>
+        <button type="button" id="sign_out" name="sign_out" class="btn btn-secondary btn-md">Sign Out</button>
+      </a>
     </span>
   </div>
+{% endif %}
 </nav>
 <div class="container-fluid">
     {% with messages = get_flashed_messages() %}

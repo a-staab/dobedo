@@ -7,9 +7,15 @@
         <input type="text" name="username" placeholder="Username" required><br>
         <input type="password" name="password" placeholder="Password" required><br>
         <input type="email" name="email" placeholder="Email" required><br>
-        <input type="text" name="phone-number" placeholder="555-555-5555"><br>
+        <input type="text" id="phone" name="phone-number" placeholder="555-555-5555"><br>
         <input type="text" name="age" placeholder="Age (optional)"><br>
         <br>
         <input type="submit" value="Save">
     </form>
+    <script>
+    function showAlert() {
+        alert("Providing your phone number is optional. If you include it, we'll send you occassional reminders by text message.");
+    }
+    $('#phone').one('change', showAlert);
+</script>
 {% endblock %}

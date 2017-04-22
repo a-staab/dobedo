@@ -3,5 +3,30 @@
 }
 
 .jumbotron {
-    padding: 2rem 2rem;
-} 
+    padding: 32px;
+}
+
+.has-margin {
+    margin-bottom: 5px;
+}
+
+.chart-column {
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+a {
+    color: #4681b3;
+}
+
+.date-planned {
+    display: block;
+    width: 100%;
+}
+
+.navbar {
+    padding-left: 33px;
+    padding-right: 45px;
+}
+
+.type-and-time {}
