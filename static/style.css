@@ -2,6 +2,10 @@
     margin-right: 7px; 
 }
 
+h1 {
+    color: blue;
+}
+
 .jumbotron {
     padding: 32px;
 }
@@ -24,9 +28,27 @@ a {
     width: 100%;
 }
 
-.navbar {
-    padding-left: 33px;
-    padding-right: 45px;
+#signin {
+    
 }
 
 .type-and-time {}
+
+
+.navbar, .navbar-default .navbar-brand, .navbar-default .navbar-nav li a {
+    padding-left: 33px;
+    padding-right: 45px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    color: #FFF;
+    font-family: 'Droid Sans', sans-serif;
+    font-size: 18px;
+}
+
+.navbar-default .navbar-brand:hover, .navbar-default .navbar-nav li a:hover {
+  color: #E1B735;
+}
+
+
+

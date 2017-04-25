@@ -2,20 +2,25 @@
 {% block title %}Create Your Account{% endblock %}
 {% block head %}{% endblock %}
 {% block content %}
-<h1>Create your account</h1>
-    <form action="/signup" method="POST">
-        <input type="text" name="username" placeholder="Username" required><br>
-        <input type="password" name="password" placeholder="Password" required><br>
-        <input type="email" name="email" placeholder="Email" required><br>
-        <input type="text" id="phone" name="phone-number" placeholder="555-555-5555"><br>
-        <input type="text" name="age" placeholder="Age (optional)"><br>
-        <br>
-        <input type="submit" value="Save">
-    </form>
-    <script>
+<p>
+<center><h2>Create your account</h2><center>
+ </p>
+    <div class="row">
+    <div id="signin" class="col-md-4 offset-md-4">
+            <form action="/signup" method="POST">
+                <input type="text" name="username" placeholder="Username" required input class="form-control"><br>
+                <input type="password" name="password" placeholder="Password" required input class="form-control"><br>
+                <input type="email" name="email" placeholder="Email" required input class="form-control"><br>
+                <input type="text" id="phone" name="phone-number" placeholder="555-555-5555" input class="form-control"><br>
+                <input type="text" name="age" placeholder="Age (optional)" input class="form-control"><br>
+                <input type="submit" value="Save" class="btn btn-secondary btn-md">
+            </form>
+        </div>
+    </div>
+<script>
     function showAlert() {
-        alert("Providing your phone number is optional. If you include it, we'll send you occassional reminders by text message.");
+        alert("Providing your phone number is optional. If you include it, we'll send you occasional reminders by text message.");
     }
-    $('#phone').one('change', showAlert);
+    $('#phone').on('change', showAlert);
 </script>
 {% endblock %}

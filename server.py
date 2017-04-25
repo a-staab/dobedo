@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, redirect, flash, session, jsonify
-from flask_debugtoolbar import DebugToolbarExtension
 from model import db, User, Activity, Occurrence, connect_to_db, sign_in_user
+from flask_debugtoolbar import DebugToolbarExtension
 from datetime import datetime
 import pytz
 import bcrypt
@@ -32,7 +32,7 @@ def show_landing_page():
 def display_signup_form():
     """Return form for signing up for an account."""
 
-    return render_template("signup.html")
+    return render_template("signup.html", hide=True)
 
 
 @app.route("/signup", methods=["POST"])
@@ -149,7 +149,7 @@ def create_activity_types():
 def display_signin_form():
     """Display form for logging into existing account."""
 
-    return render_template("signin.html")
+    return render_template("signin.html", hide=True)
 
 
 @app.route("/signin", methods=["POST"])
@@ -406,7 +406,7 @@ def signout_user():
 connect_to_db(app)
 
 if __name__ == "__main__":
-    app.debug = False
+    app.debug = True
     app.jinja_env.auto_reload = app.debug
     connect_to_db(app)
     DebugToolbarExtension(app)

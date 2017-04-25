@@ -1,11 +1,18 @@
 {% extends "base.html" %}
 {% block title %}Sign In{% endblock %}
 {% block content %}
-<h1>Sign in to your account</h1>
-
-<form action="signin", method="POST">
-    <input type="text" name="email" placeholder="Email" required><br><br>
-    <input type="password" name="provided-password" placeholder="Password" required><br><br>
-    <input type="submit" value="Sign in">
-</form>
+<div class="container">
+    <p>
+    <center><h3>Sign in to your account</h3></center>
+    </p>
+        <div class="row">
+        <div id="signin" class="col-md-4 offset-md-4">
+            <form action="signin", method="POST">
+                <input type="text" name="email" placeholder="Email" required input class="form-control"><br>
+                <input type="password" name="provided-password" placeholder="Password" required input class="form-control"><br>
+                <center><input type="submit" value="Sign in" class="btn btn-secondary btn-md"></center>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -8,17 +8,24 @@ Time to get started! What activities would you like to track? You can choose as
 few as one, but it's usually ideal to choose at least two. We also recommend 
 picking activities you do at least a couple times per week.
 <p>
+
 <form action="/setup" method="POST">
-    <input type="text" name="activity_1"><br><br>
-    <input type="text" name="activity_2"><br><br>
-    <input type="text" name="activity_3"><br><br>
-    <input type="text" name="activity_4"><br><br>
-    <input type="text" name="activity_5"><br><br>
-    <input type="text" name="activity_6"><br><br>
-    <input type="text" name="activity_7"><br><br>
-    <input type="text" name="activity_8"><br><br>
-    <input type="text" name="activity_9"><br><br>
-    <input type="text" name="activity_10"><br><br>
-    <input type="submit" value="Save">
+    <div class="row">
+        <div class="col-md-6">
+            <input type="text" name="activity_1" input class="form-control"><br><br>
+            <input type="text" name="activity_2" input class="form-control"><br><br>
+            <input type="text" name="activity_3" input class="form-control"><br><br>
+            <input type="text" name="activity_4" input class="form-control"><br><br>
+            <input type="text" name="activity_5" input class="form-control"><br><br>
+        </div>
+        <div class="col-md-6"> 
+            <input type="text" name="activity_6" input class="form-control"><br><br>
+            <input type="text" name="activity_7" input class="form-control"><br><br>
+            <input type="text" name="activity_8" input class="form-control"><br><br>
+            <input type="text" name="activity_9" input class="form-control"><br><br>
+            <input type="text" name="activity_10"input class="form-control"><br><br>
+            <input type="submit" value="Save">
+        </div>
+    </div>
 </form>
 {% endblock %}

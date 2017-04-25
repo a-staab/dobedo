@@ -78,3 +78,9 @@ SMf755c552d53b457f86597fd8ce5dde01
 /home/vagrant/src/project/env/local/lib/python2.7/site-packages/flask_sqlalchemy/__init__.py:839: FSADeprecationWarning: SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True or False to suppress this warning.
   'SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and '
 SM7a3380d3d8f340458933fc7df4998ea7
+/home/vagrant/src/project/env/local/lib/python2.7/site-packages/flask_sqlalchemy/__init__.py:839: FSADeprecationWarning: SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True or False to suppress this warning.
+  'SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and '
+SM28b45cd303664335ba31b92b2619843c
+/home/vagrant/src/project/env/local/lib/python2.7/site-packages/flask_sqlalchemy/__init__.py:839: FSADeprecationWarning: SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True or False to suppress this warning.
+  'SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and '
+SM5c28684d67ea4160ac273b9a768e6c18
