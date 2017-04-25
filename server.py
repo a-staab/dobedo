@@ -9,7 +9,7 @@ app = Flask(__name__)
 app.secret_key = "7SOIF280FSH9G0-SSKJ"
 
 
-@app.before_request
+#@app.before_request
 def check_signed_in():
     """Check that user is logged in before loading pages which should only be
     accessible when logged in. If not, redirect to sign-in page."""

@@ -2,10 +2,6 @@
     margin-right: 7px; 
 }
 
-h1 {
-    color: blue;
-}
-
 .jumbotron {
     padding: 32px;
 }
@@ -28,11 +24,11 @@ a {
     width: 100%;
 }
 
-#signin {
-    
+/*#signin {
+
 }
 
-.type-and-time {}
+.type-and-time {}*/
 
 
 .navbar, .navbar-default .navbar-brand, .navbar-default .navbar-nav li a {
@@ -42,7 +38,7 @@ a {
     border: none;
     border-radius: 0;
     color: #FFF;
-    font-family: 'Droid Sans', sans-serif;
+    font-family: 'Lobster Two', cursive;
     font-size: 18px;
 }
 
@@ -50,5 +46,20 @@ a {
   color: #E1B735;
 }
 
+h1, h2, h3, h4 {
+    font-family: 'Lobster Two', cursive;
+}
 
+body {
+    font-family: 'Gafata', sans-serif;
+    font-size: 20px;
+    line-height: 30px;
+}
 
+  .btn {
+    font-family: 'Gafata', sans-serif;
+}
+
+.custom-select {
+    font-family: 'Gafata', sans-serif;
+}
