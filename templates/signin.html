@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% block title %}Sign In{% endblock %}
 {% block content %}
-<div class="container">
+<div class="container" id="sign-in">
     <p>
     <center><h3>Sign in to your account</h3></center>
     </p>
         <div class="row">
-        <div id="signin" class="col-md-4 offset-md-4">
+        <div class="col-md-4 offset-md-4">
             <form action="signin", method="POST">
                 <input type="text" name="email" placeholder="Email" required input class="form-control"><br>
                 <input type="password" name="provided-password" placeholder="Password" required input class="form-control"><br>

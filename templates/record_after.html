@@ -2,20 +2,18 @@
 {% block title %}Finish Your Entry{% endblock %}
 {% block head %}{% endblock %}
 {% block content %}
-<h4><i>{{ activity_name|title }}</i></h4>
-<a href="/signout">
-    <button type="button" id="sign_out" name="sign_out">Sign Out</button>
-</a>
+<h3 class="record-page-header">{{ activity_name|title }}</h3>
 <p>When did you finish?
 </p>
 <form action="/record_after/{{ occurrence_id }}", method="POST">
-    <button type="button" id="now-after" name="choose-now">Now</button> or
-    <input type=text name="end-time" id="end-time" placeholder="e.g, 12:00 pm"> 
+    <button type="button" id="now-after" name="choose-now" class="btn btn-secondary btn-md">Now</button> or
+    <input type=text name="end-time" id="end-time" placeholder="e.g., 12:00 pm" input class="form-control"> 
     <input type=date name="end-date" id="end-date" placeholder="12/31/2017">
     <br>
     <br>
-    How did you feel about it? 
-    <select name="after-rating">
+    <div class="form-group">
+    How did you feel about it?
+    <select name="after-rating" class="custom-select">
         <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
@@ -27,9 +25,8 @@
         <option value="9">9</option>
         <option value="10">10</option>
     </select>
-    <br>
-    <br>
-    <input type="submit" value="Save">
+    </div>
+    <input type="submit" value="Save" class="btn btn-secondary btn-md">
 </form>
 <script>
     // Clicking the "Now" button will autofill the date and time fields with the
