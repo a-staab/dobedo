@@ -406,7 +406,7 @@ def signout_user():
 connect_to_db(app)
 
 if __name__ == "__main__":
-    app.debug = True
+    app.debug = False
     app.jinja_env.auto_reload = app.debug
     connect_to_db(app)
     DebugToolbarExtension(app)
