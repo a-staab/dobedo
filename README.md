@@ -7,27 +7,27 @@ regular activities to better recognize which ones have the most positive impact
 on their mood. 
 
 At signup, they select up to ten activities to track. Going forward, they record 
-when they plan to do an activity and how they're feeling about doing it and, 
-afterward, once they've done it, at what time they finished and how
-they felt then. The app then provides a visualization of their expected and
-actual sentiment toward all recorded occurrences of each activity over time. 
-Also, if the user provides their phone number when signing up for an account, 
-they receive an automated text message reminder if 24 hours have passed since
-the stated starting time for a planned activity and they haven't yet recorded 
-how they felt about it afterward.
+when they plan to do an activity and how they're feeling about doing it.  
+Afterward, once they've done it, they then also log what time they finished and 
+how actually felt doing it. The app then provides a visualization of their 
+expected and actual sentiment toward all recorded occurrences of each activity 
+over time. Also, if the user provides their phone number when signing up for an 
+account, they receive an automated text message reminder if 24 hours have passed
+since the stated starting time for a planned activity and they haven't yet 
+recorded how they felt about it afterward.
 
 #### Tech Stack
 
-Python
-Flask
-Flask-SQLAlchemy
-PostgreSQL
-JavaScript
-Bootstrap
-jQuery
-Jinja
-Chart.js
-Twilio API
+- Python
+- Flask
+- Flask-SQLAlchemy
+- PostgreSQL
+- JavaScript
+- Bootstrap
+- jQuery
+- Jinja
+- Chart.js
+- Twilio API
 
 #### Screenshots and Features
 
