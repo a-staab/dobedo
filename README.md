@@ -67,7 +67,7 @@ dashboard.
 #### About the Developer
 
 Amber recently graduated from the full-stack software engineering fellowship at 
-Hackbright Academy in San Francisco, CA. This is her first web application, and 
+Hackbright Academy in San Francisco. This is her first web application, and 
 her favorite parts about building it were creating the data model, unbreaking 
 (and sometimes re-breaking and then again unbreaking) things, and coming to 
 really appreciate the convenience and elegance provided by an ORM.
