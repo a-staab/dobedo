@@ -7,8 +7,8 @@ regular activities to better recognize which ones have the most positive impact
 on their mood. 
 
 At signup, they select up to ten activities to track. Going forward, they record 
-when they plan to do an activity and how they're feeling about doing it.  
-Afterward, once they've done it, they then also log what time they finished and 
+when they plan to do an activity and how they're feeling about doing it. Afterward,
+once they've done it, they then also log what time they finished and 
 how actually felt doing it. The app then provides a visualization of their 
 expected and actual sentiment toward all recorded occurrences of each activity 
 over time. Also, if the user provides their phone number when signing up for an 
@@ -66,10 +66,10 @@ dashboard.
 
 #### About the Developer
 
-Amber will be graduating soon from the full-stack software engineering 
-fellowship at Hackbright Academy in San Francisco, CA. This is her first web 
-application, and her favorite parts about building it were creating the data 
-model, unbreaking (and sometimes re-breaking and then again unbreaking) things,
-and coming to really appreciate the convenience and elegance provided by an ORM.
+Amber recently graduated from the full-stack software engineering fellowship at 
+Hackbright Academy in San Francisco, CA. This is her first web application, and 
+her favorite parts about building it were creating the data model, unbreaking 
+(and sometimes re-breaking and then again unbreaking) things, and coming to 
+really appreciate the convenience and elegance provided by an ORM.
 
 You can learn more here: www.linkedin.com/in/amberstaab/
