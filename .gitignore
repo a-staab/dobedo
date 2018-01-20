@@ -1,5 +1,0 @@
-env
-*.pyc
-.DS_Store
-ngrok
-secrets.sh

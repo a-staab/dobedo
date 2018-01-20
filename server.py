@@ -2,11 +2,12 @@ from flask import Flask, request, render_template, redirect, flash, session, jso
 from model import db, User, Activity, Occurrence, connect_to_db, sign_in_user
 from flask_debugtoolbar import DebugToolbarExtension
 from datetime import datetime
+import os
 import pytz
 import bcrypt
 
 app = Flask(__name__)
-app.secret_key = "7SOIF280FSH9G0-SSKJ"
+app.secret_key = os.environ["SECRET_KEY"]
 
 
 @app.before_request
